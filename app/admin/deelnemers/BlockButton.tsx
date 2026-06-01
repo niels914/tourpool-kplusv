@@ -11,8 +11,8 @@ export function BlockButton({ profileId, isBlocked }: { profileId: string; isBlo
   async function toggle() {
     setLoading(true);
     const supabase = createClient();
-    await supabase
-      .from("profiles")
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (supabase.from("profiles") as any)
       .update({ is_blocked: !isBlocked })
       .eq("id", profileId);
     router.refresh();

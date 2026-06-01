@@ -12,10 +12,10 @@ export default async function AdminDeelnemersPage() {
   // Aantal picks per user
   const { data: pickCounts } = await supabase
     .from("team_picks")
-    .select("user_id");
+    .select("user_id, bib_slot");
 
   const pickCountByUser: Record<string, number> = {};
-  pickCounts?.forEach((p) => {
+  (pickCounts as Array<{ user_id: string; bib_slot: number }> | null)?.forEach((p) => {
     pickCountByUser[p.user_id] = (pickCountByUser[p.user_id] ?? 0) + 1;
   });
 

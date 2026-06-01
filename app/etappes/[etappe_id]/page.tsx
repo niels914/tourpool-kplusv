@@ -105,7 +105,7 @@ export default async function EtappeDetailPage({
                         type === "stage_finish"
                           ? stageFinishPoints(r.position)
                           : jerseyPoints(type, r.position);
-                      const rider = r.riders as { full_name: string; team_name: string; bib_number: number } | null;
+                      const rider = r.riders as unknown as { full_name: string; team_name: string; bib_number: number } | null;
                       return (
                         <tr key={r.id} className="border-b border-[#F3F4F6]">
                           <td className="px-4 py-2 font-medium">{r.position}</td>

@@ -1,3 +1,6 @@
+// Handmatige DB-types voor supabase-js v2
+// Na `supabase gen types` kan dit bestand worden vervangen door gegenereerde types
+
 export type Json =
   | string
   | number
@@ -32,7 +35,9 @@ export type Database = {
           email?: string;
           is_admin?: boolean;
           is_blocked?: boolean;
+          created_at?: string;
         };
+        Relationships: [];
       };
       riders: {
         Row: {
@@ -57,8 +62,11 @@ export type Database = {
           pcs_slug?: string | null;
           is_dns?: boolean;
           is_dnf?: boolean;
+          created_at?: string;
+          updated_at?: string;
         };
         Update: {
+          id?: string;
           bib_number?: number;
           full_name?: string;
           team_name?: string;
@@ -66,7 +74,9 @@ export type Database = {
           pcs_slug?: string | null;
           is_dns?: boolean;
           is_dnf?: boolean;
+          updated_at?: string;
         };
+        Relationships: [];
       };
       team_picks: {
         Row: {
@@ -81,10 +91,28 @@ export type Database = {
           user_id: string;
           rider_id: string;
           bib_slot: number;
+          created_at?: string;
         };
         Update: {
+          id?: string;
+          user_id?: string;
           rider_id?: string;
+          bib_slot?: number;
         };
+        Relationships: [
+          {
+            foreignKeyName: "team_picks_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "team_picks_rider_id_fkey";
+            columns: ["rider_id"];
+            referencedRelation: "riders";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       stages: {
         Row: {
@@ -111,8 +139,12 @@ export type Database = {
           distance_km?: number | null;
           status?: "scheduled" | "live" | "results_pending" | "locked";
           pcs_stage_url?: string | null;
+          locked_at?: string | null;
+          locked_by?: string | null;
+          created_at?: string;
         };
         Update: {
+          id?: string;
           stage_number?: number;
           stage_date?: string;
           stage_type?: "rit" | "ttt" | "itt";
@@ -124,6 +156,7 @@ export type Database = {
           locked_at?: string | null;
           locked_by?: string | null;
         };
+        Relationships: [];
       };
       stage_results: {
         Row: {
@@ -150,11 +183,21 @@ export type Database = {
             | "sprint_standing"
             | "white_standing";
           position: number;
+          created_at?: string;
         };
         Update: {
+          id?: string;
+          stage_id?: string;
           rider_id?: string;
+          result_type?:
+            | "stage_finish"
+            | "gc_standing"
+            | "mountain_standing"
+            | "sprint_standing"
+            | "white_standing";
           position?: number;
         };
+        Relationships: [];
       };
       final_results: {
         Row: {
@@ -170,9 +213,12 @@ export type Database = {
           position: number;
         };
         Update: {
+          id?: string;
           rider_id?: string;
+          result_type?: "final_gc" | "final_mountain" | "final_sprint" | "final_white";
           position?: number;
         };
+        Relationships: [];
       };
       config: {
         Row: {
@@ -186,9 +232,11 @@ export type Database = {
           updated_at?: string;
         };
         Update: {
+          key?: string;
           value?: string;
           updated_at?: string;
         };
+        Relationships: [];
       };
       invitations: {
         Row: {
@@ -204,12 +252,20 @@ export type Database = {
           id?: string;
           email?: string | null;
           token?: string;
-          created_by: string;
-        };
-        Update: {
           used_at?: string | null;
           used_by?: string | null;
+          created_by: string;
+          created_at?: string;
         };
+        Update: {
+          id?: string;
+          email?: string | null;
+          token?: string;
+          used_at?: string | null;
+          used_by?: string | null;
+          created_by?: string;
+        };
+        Relationships: [];
       };
     };
     Views: {
@@ -223,12 +279,14 @@ export type Database = {
           bonus_points: number;
           rank: number;
         };
+        Relationships: [];
       };
       rider_pick_counts: {
         Row: {
           rider_id: string;
           pick_count: number;
         };
+        Relationships: [];
       };
       rider_score_detail: {
         Row: {
@@ -242,6 +300,7 @@ export type Database = {
           weighted_stage_points: number;
           weighted_bonus_points: number;
         };
+        Relationships: [];
       };
       cumulative_points: {
         Row: {
@@ -249,15 +308,16 @@ export type Database = {
           stage_number: number;
           cumulative_points: number;
         };
+        Relationships: [];
       };
     };
     Functions: {
       is_admin: {
-        Args: Record<string, never>;
+        Args: Record<PropertyKey, never>;
         Returns: boolean;
       };
       registration_open: {
-        Args: Record<string, never>;
+        Args: Record<PropertyKey, never>;
         Returns: boolean;
       };
       stage_finish_points: {
@@ -284,5 +344,6 @@ export type Database = {
         | "white_standing";
       final_result_type: "final_gc" | "final_mountain" | "final_sprint" | "final_white";
     };
+    CompositeTypes: Record<string, never>;
   };
 };
