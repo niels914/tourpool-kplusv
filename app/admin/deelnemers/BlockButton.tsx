@@ -1,0 +1,35 @@
+"use client";
+
+import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
+
+export function BlockButton({ profileId, isBlocked }: { profileId: string; isBlocked: boolean }) {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  async function toggle() {
+    setLoading(true);
+    const supabase = createClient();
+    await supabase
+      .from("profiles")
+      .update({ is_blocked: !isBlocked })
+      .eq("id", profileId);
+    router.refresh();
+    setLoading(false);
+  }
+
+  return (
+    <button
+      onClick={toggle}
+      disabled={loading}
+      className={`rounded-lg px-2.5 py-1 text-xs font-medium transition ${
+        isBlocked
+          ? "bg-[#E8F7EE] text-[#006B35] hover:bg-[#D1FAE5]"
+          : "bg-red-50 text-red-600 hover:bg-red-100"
+      }`}
+    >
+      {loading ? "…" : isBlocked ? "Activeren" : "Blokkeren"}
+    </button>
+  );
+}

@@ -1,0 +1,81 @@
+import { createClient } from "@/lib/supabase/server";
+import { UitnodigingForm } from "./UitnodigingForm";
+
+export default async function AdminUitnodigingenPage() {
+  const supabase = await createClient();
+
+  const { data: { user } } = await supabase.auth.getUser();
+
+  const { data: invitations } = await supabase
+    .from("invitations")
+    .select("*, used_by_profile:profiles!invitations_used_by_fkey(display_name)")
+    .order("created_at", { ascending: false });
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tourpool.netlify.app";
+
+  return (
+    <div>
+      <h1 className="mb-6 text-2xl font-bold text-[#1A1A1A]">Uitnodigingen</h1>
+
+      <div className="mb-8">
+        <UitnodigingForm userId={user!.id} />
+      </div>
+
+      <h2 className="mb-3 font-semibold text-[#111827]">Verzonden uitnodigingen</h2>
+
+      {!invitations?.length ? (
+        <p className="text-sm text-[#6B7280]">Nog geen uitnodigingen aangemaakt.</p>
+      ) : (
+        <div className="overflow-hidden rounded-2xl border border-[#E5E5E0] bg-white">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-[#E5E5E0] bg-[#F9F9F7]">
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">E-mail</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Link</th>
+                <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Status</th>
+                <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280] sm:table-cell">Aangemaakt</th>
+              </tr>
+            </thead>
+            <tbody>
+              {invitations.map((inv) => {
+                const inviteUrl = `${baseUrl}/join?token=${inv.token}`;
+                return (
+                  <tr key={inv.id} className="border-b border-[#F3F4F6]">
+                    <td className="px-4 py-3 text-[#374151]">{inv.email ?? "—"}</td>
+                    <td className="px-4 py-3">
+                      {inv.used_at ? (
+                        <span className="text-[#6B7280]">Gebruikt</span>
+                      ) : (
+                        <button
+                          onClick={() => navigator.clipboard.writeText(inviteUrl)}
+                          className="truncate max-w-[200px] text-[#00A651] underline text-xs"
+                          title={inviteUrl}
+                        >
+                          Kopieer link
+                        </button>
+                      )}
+                    </td>
+                    <td className="px-4 py-3">
+                      {inv.used_at ? (
+                        <span className="rounded-full bg-[#E8F7EE] px-2 py-0.5 text-xs font-medium text-[#006B35]">
+                          Gebruikt
+                        </span>
+                      ) : (
+                        <span className="rounded-full bg-[#FFF3B0] px-2 py-0.5 text-xs font-medium text-[#92400E]">
+                          Wacht
+                        </span>
+                      )}
+                    </td>
+                    <td className="hidden px-4 py-3 text-xs text-[#6B7280] sm:table-cell">
+                      {new Date(inv.created_at).toLocaleDateString("nl-NL")}
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  );
+}

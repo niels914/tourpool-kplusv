@@ -1,0 +1,42 @@
+@import "tailwindcss";
+
+@theme {
+  /* Tour de France kleuren */
+  --color-tdf-yellow: #FFD700;
+  --color-tdf-yellow-light: #FFF3B0;
+  --color-tdf-black: #1A1A1A;
+
+  /* KplusV kleuren */
+  --color-kplusv-green: #00A651;
+  --color-kplusv-dark: #006B35;
+  --color-kplusv-light: #E8F7EE;
+
+  /* Jersey kleuren */
+  --color-jersey-yellow: #FFD700;
+  --color-jersey-green: #006400;
+  --color-jersey-polka: #CC0000;
+  --color-jersey-white: #E8E8E8;
+
+  /* Neutrale tinten */
+  --color-surface: #FAFAF7;
+  --color-border: #E5E5E0;
+  --color-muted: #6B7280;
+  --color-text: #111827;
+
+  /* Podiumkleuren */
+  --color-gold: #FFD700;
+  --color-silver: #C0C0C0;
+  --color-bronze: #CD7F32;
+}
+
+body {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Gele TdF accentbalk boven elke pagina */
+.tdf-stripe {
+  height: 4px;
+  background: linear-gradient(90deg, var(--color-kplusv-green) 0%, var(--color-tdf-yellow) 100%);
+}

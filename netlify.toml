@@ -1,0 +1,21 @@
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+[[plugins]]
+  package = "@netlify/plugin-nextjs"
+
+[functions]
+  directory = "netlify/functions"
+  node_bundler = "esbuild"
+
+[[scheduled-functions]]
+  function = "sync-stage-results"
+  schedule = "*/30 * * * *"
+
+[[scheduled-functions]]
+  function = "sync-startlist"
+  schedule = "0 8 * * *"
