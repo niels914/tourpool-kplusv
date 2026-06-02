@@ -36,6 +36,8 @@ export async function proxy(request: NextRequest) {
     "/registratie",
     "/mijn-team",
     "/etappes",
+    "/renners",
+    "/deelnemers",
     "/admin",
   ];
 

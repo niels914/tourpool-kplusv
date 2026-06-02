@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/server";
+import Link from "next/link";
 
 export const revalidate = 60;
 
@@ -14,6 +15,15 @@ export default async function KlassementPage() {
     .from("stages")
     .select("stage_number, status, stage_date")
     .order("stage_number", { ascending: true });
+
+  const { data: config } = await supabase
+    .from("config")
+    .select("value")
+    .eq("key", "registration_deadline")
+    .single();
+
+  const deadline = config ? new Date(config.value) : null;
+  const registrationClosed = deadline ? new Date() >= deadline : false;
 
   const lockedStages = stages?.filter((s) => s.status === "locked").length ?? 0;
   const totalStages = stages?.length ?? 21;
@@ -34,6 +44,13 @@ export default async function KlassementPage() {
           <div className="text-xs text-[#6B7280]">etappes</div>
         </div>
       </div>
+
+      {registrationClosed && (
+        <div className="mb-4 flex items-center gap-2 rounded-xl bg-[#E8F7EE] px-4 py-2.5 text-sm text-[#006B35]">
+          <span>👥</span>
+          <span>Registratie gesloten — klik op een naam om de ploeg te bekijken</span>
+        </div>
+      )}
 
       {!klassement || klassement.length === 0 ? (
         <EmptyState />
@@ -71,9 +88,18 @@ export default async function KlassementPage() {
                     <RankBadge rank={entry.rank} />
                   </td>
                   <td className="px-4 py-3">
-                    <span className="font-medium text-[#111827]">
-                      {entry.display_name}
-                    </span>
+                    {registrationClosed ? (
+                      <Link
+                        href={`/deelnemers/${entry.user_id}`}
+                        className="font-medium text-[#111827] hover:text-[#00A651] hover:underline"
+                      >
+                        {entry.display_name}
+                      </Link>
+                    ) : (
+                      <span className="font-medium text-[#111827]">
+                        {entry.display_name}
+                      </span>
+                    )}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <span className="text-lg font-bold text-[#111827]">
@@ -94,7 +120,11 @@ export default async function KlassementPage() {
       )}
 
       <p className="mt-4 text-xs text-[#6B7280]">
-        Punten zijn gewogen met de wortelregel — zie <a href="/spelregels" className="underline">spelregels</a>.
+        Punten zijn gewogen met de wortelregel — zie{" "}
+        <a href="/spelregels" className="underline">
+          spelregels
+        </a>
+        .
       </p>
     </div>
   );
@@ -102,8 +132,10 @@ export default async function KlassementPage() {
 
 function RankBadge({ rank }: { rank: number }) {
   if (rank === 1) return <span className="text-xl">👑</span>;
-  if (rank === 2) return <span className="font-bold text-[#C0C0C0]">2</span>;
-  if (rank === 3) return <span className="font-bold text-[#CD7F32]">3</span>;
+  if (rank === 2)
+    return <span className="font-bold text-[#C0C0C0]">2</span>;
+  if (rank === 3)
+    return <span className="font-bold text-[#CD7F32]">3</span>;
   return <span className="text-[#6B7280]">{rank}</span>;
 }
 

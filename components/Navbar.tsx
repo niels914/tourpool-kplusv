@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 const navLinks = [
   { href: "/klassement", label: "Klassement" },
   { href: "/etappes", label: "Etappes" },
+  { href: "/renners", label: "Renners" },
   { href: "/mijn-team", label: "Mijn ploeg" },
   { href: "/spelregels", label: "Spelregels" },
 ];
