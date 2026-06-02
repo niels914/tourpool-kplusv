@@ -71,7 +71,7 @@ export default async function RennerDetailPage({
 
       {/* Renner header */}
       <div className="mb-8 flex items-start gap-4">
-        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#1A1A1A]">
+        <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#5760A6]">
           <span className="text-lg font-bold text-[#FFD700]">
             {rider.bib_number}
           </span>

@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -50,7 +50,7 @@ export function RiderEditRow({ rider }: { rider: Rider }) {
         {rider.team_name}
       </td>
       <td className="px-4 py-2.5 text-center">
-        <span className="flex h-6 w-6 mx-auto items-center justify-center rounded-full bg-[#1A1A1A] text-xs font-bold text-[#FFD700]">
+        <span className="flex h-6 w-6 mx-auto items-center justify-center rounded-full bg-[#5760A6] text-xs font-bold text-white">
           {rider.bib_digit}
         </span>
       </td>

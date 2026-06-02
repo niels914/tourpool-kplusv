@@ -133,7 +133,7 @@ export function RegistratieForm({
               }`}
             >
               <div className="mb-2 flex items-center justify-between">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#1A1A1A] text-xs font-bold text-[#FFD700]">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#5760A6] text-xs font-bold text-white">
                   …{slot}
                 </span>
                 {selectedRider && (

@@ -94,7 +94,7 @@ function RegistratieGesloten({ picks }: { picks: unknown[] | null }) {
               const p = pick as { bib_slot: number; riders: { full_name: string; bib_number: number; team_name: string } | null };
               return (
                 <div key={p.bib_slot} className="flex items-center gap-3">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#1A1A1A] text-xs font-bold text-[#FFD700]">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#5760A6] text-xs font-bold text-white">
                     …{p.bib_slot}
                   </span>
                   <span className="font-medium text-[#111827]">{p.riders?.full_name}</span>

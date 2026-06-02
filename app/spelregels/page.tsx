@@ -23,7 +23,7 @@ export default function SpelregelsPage() {
         <div className="mb-4 grid grid-cols-4 gap-2 sm:grid-cols-8">
           {[1,2,3,4,5,6,7,8].map((d) => (
             <div key={d} className="rounded-lg border border-[#E2DFF0] bg-white p-2 text-center">
-              <div className="text-lg font-bold text-[#FFD700]" style={{ WebkitTextStroke: "1px #1A1A1A" }}>…{d}</div>
+              <div className="text-lg font-bold text-white" style={{ WebkitTextStroke: "1px #1A1A1A" }}>…{d}</div>
               <div className="text-xs text-[#6B7280]">slot {d}</div>
             </div>
           ))}

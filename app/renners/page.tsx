@@ -82,7 +82,7 @@ export default async function RennersPage() {
                     >
                       <div className="flex items-center gap-3">
                         {/* Rugnummer badge */}
-                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#1A1A1A] text-xs font-bold text-[#FFD700]">
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#5760A6] text-xs font-bold text-white">
                           {rider.bib_number}
                         </span>
                         <div>

@@ -131,7 +131,7 @@ export default async function DeelnemerPage({
                   return (
                     <tr key={pick.rider_id} className="border-b border-[#F3F4F6]">
                       <td className="px-4 py-3">
-                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#1A1A1A] text-xs font-bold text-[#FFD700]">
+                        <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#5760A6] text-xs font-bold text-white">
                           …{pick.bib_slot}
                         </span>
                       </td>
@@ -243,7 +243,7 @@ export default async function DeelnemerPage({
             >
               {/* Slot badge */}
               <div>
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#1A1A1A] text-xs font-bold text-[#FFD700]">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-[#5760A6] text-xs font-bold text-white">
                   …{slot}
                 </span>
               </div>
