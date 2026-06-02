@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -40,21 +41,26 @@ export function Navbar() {
   }
 
   return (
-    <nav className="border-b border-[#E5E5E0] bg-white">
+    <nav
+      className="border-b border-[#4A539A]"
+      style={{
+        background: "linear-gradient(135deg, #5760A6 0%, #4A539A 25%, #5760A6 50%, #6B5BA0 75%, #5760A6 100%)",
+      }}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
-        {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-[#1A1A1A]">
-            <span className="text-sm">🚴</span>
-          </div>
+        {/* Logo + title */}
+        <Link href="/" className="flex items-center gap-3">
+          <Image
+            src="/kplusv-logo.jpg"
+            alt="KplusV"
+            width={32}
+            height={32}
+            className="rounded-md"
+          />
           <div className="hidden sm:block">
-            <span className="text-sm font-bold text-[#1A1A1A]">
-              KplusV
-            </span>
-            <span className="ml-1 text-sm font-bold text-[#FFD700]" style={{ WebkitTextStroke: "0.5px #1A1A1A" }}>
-              Tourpool
-            </span>
-            <span className="ml-1 text-xs text-[#6B7280]">2026</span>
+            <span className="text-sm font-semibold text-white">KplusV</span>
+            <span className="ml-1 text-sm font-semibold text-[#FFD700]">Tourpool</span>
+            <span className="ml-1 text-xs text-white/60">2026</span>
           </div>
         </Link>
 
@@ -67,8 +73,8 @@ export function Navbar() {
                 href={link.href}
                 className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
                   pathname.startsWith(link.href)
-                    ? "bg-[#E8F7EE] text-[#006B35]"
-                    : "text-[#374151] hover:bg-[#F3F4F6]"
+                    ? "bg-white text-[#5760A6]"
+                    : "text-white/80 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 {link.label}
@@ -79,8 +85,8 @@ export function Navbar() {
                 href="/admin"
                 className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
                   pathname.startsWith("/admin")
-                    ? "bg-[#FFF3B0] text-[#92400E]"
-                    : "text-[#374151] hover:bg-[#F3F4F6]"
+                    ? "bg-[#B8AED6] text-[#5760A6]"
+                    : "text-white/80 hover:bg-white/10 hover:text-white"
                 }`}
               >
                 Admin
@@ -89,7 +95,7 @@ export function Navbar() {
           </div>
         )}
 
-        {/* Rechts: registratie-link + uitloggen */}
+        {/* Rechts: ploeg samenstellen + uitloggen */}
         <div className="flex items-center gap-2">
           {loggedIn && (
             <>
@@ -97,15 +103,15 @@ export function Navbar() {
                 href="/registratie"
                 className={`hidden rounded-lg border px-3 py-1.5 text-sm font-medium transition sm:block ${
                   pathname === "/registratie"
-                    ? "border-[#00A651] bg-[#E8F7EE] text-[#006B35]"
-                    : "border-[#E5E5E0] text-[#374151] hover:border-[#00A651]"
+                    ? "border-white bg-white text-[#5760A6]"
+                    : "border-white/30 text-white/80 hover:border-white hover:text-white"
                 }`}
               >
                 Mijn ploeg samenstellen
               </Link>
               <button
                 onClick={handleSignOut}
-                className="rounded-lg px-3 py-1.5 text-sm text-[#6B7280] hover:text-[#111827]"
+                className="rounded-lg px-3 py-1.5 text-sm text-white/60 hover:text-white"
               >
                 Uitloggen
               </button>
@@ -116,7 +122,7 @@ export function Navbar() {
           {loggedIn && (
             <button
               onClick={() => setMenuOpen(!menuOpen)}
-              className="rounded-lg p-2 text-[#374151] hover:bg-[#F3F4F6] md:hidden"
+              className="rounded-lg p-2 text-white/80 hover:bg-white/10 md:hidden"
             >
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {menuOpen ? (
@@ -132,7 +138,7 @@ export function Navbar() {
 
       {/* Mobiel menu */}
       {menuOpen && loggedIn && (
-        <div className="border-t border-[#E5E5E0] px-4 py-2 md:hidden">
+        <div className="border-t border-white/20 px-4 py-2 md:hidden">
           {navLinks.map((link) => (
             <Link
               key={link.href}
@@ -140,8 +146,8 @@ export function Navbar() {
               onClick={() => setMenuOpen(false)}
               className={`block rounded-lg px-3 py-2 text-sm font-medium ${
                 pathname.startsWith(link.href)
-                  ? "bg-[#E8F7EE] text-[#006B35]"
-                  : "text-[#374151]"
+                  ? "bg-white text-[#5760A6]"
+                  : "text-white/80 hover:text-white"
               }`}
             >
               {link.label}
@@ -150,7 +156,7 @@ export function Navbar() {
           <Link
             href="/registratie"
             onClick={() => setMenuOpen(false)}
-            className="block rounded-lg px-3 py-2 text-sm font-medium text-[#374151]"
+            className="block rounded-lg px-3 py-2 text-sm font-medium text-white/80 hover:text-white"
           >
             Ploeg samenstellen
           </Link>
@@ -158,7 +164,7 @@ export function Navbar() {
             <Link
               href="/admin"
               onClick={() => setMenuOpen(false)}
-              className="block rounded-lg px-3 py-2 text-sm font-medium text-[#92400E]"
+              className="block rounded-lg px-3 py-2 text-sm font-medium text-[#B8AED6]"
             >
               Admin
             </Link>

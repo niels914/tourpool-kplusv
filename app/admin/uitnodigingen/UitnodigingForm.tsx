@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -32,7 +32,7 @@ export function UitnodigingForm({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="rounded-xl border border-[#E5E5E0] bg-white p-5">
+    <div className="rounded-xl border border-[#E2DFF0] bg-white p-5">
       <h2 className="mb-3 font-semibold text-[#111827]">Nieuwe uitnodiging</h2>
       <form onSubmit={handleCreate} className="flex gap-2">
         <input
@@ -40,7 +40,7 @@ export function UitnodigingForm({ userId }: { userId: string }) {
           placeholder="naam@kplusv.nl (optioneel)"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className="flex-1 rounded-lg border border-[#E5E5E0] px-3 py-2 text-sm outline-none focus:border-[#00A651]"
+          className="flex-1 rounded-lg border border-[#E2DFF0] px-3 py-2 text-sm outline-none focus:border-[#9462A6]"
         />
         <button
           type="submit"
@@ -51,7 +51,7 @@ export function UitnodigingForm({ userId }: { userId: string }) {
         </button>
       </form>
       {message && (
-        <p className="mt-2 text-sm text-[#006B35]">{message}</p>
+        <p className="mt-2 text-sm text-[#5760A6]">{message}</p>
       )}
     </div>
   );

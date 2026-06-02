@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -60,7 +60,7 @@ export function RiderEditRow({ rider }: { rider: Rider }) {
         ) : rider.is_dnf ? (
           <span className="rounded-full bg-orange-100 px-2 py-0.5 text-xs font-medium text-orange-700">DNF</span>
         ) : (
-          <span className="rounded-full bg-[#E8F7EE] px-2 py-0.5 text-xs font-medium text-[#006B35]">Start</span>
+          <span className="rounded-full bg-[#EDE8F5] px-2 py-0.5 text-xs font-medium text-[#5760A6]">Start</span>
         )}
       </td>
       <td className="px-4 py-2.5">

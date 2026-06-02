@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -25,7 +25,7 @@ export function BlockButton({ profileId, isBlocked }: { profileId: string; isBlo
       disabled={loading}
       className={`rounded-lg px-2.5 py-1 text-xs font-medium transition ${
         isBlocked
-          ? "bg-[#E8F7EE] text-[#006B35] hover:bg-[#D1FAE5]"
+          ? "bg-[#EDE8F5] text-[#5760A6] hover:bg-[#D1FAE5]"
           : "bg-red-50 text-red-600 hover:bg-red-100"
       }`}
     >

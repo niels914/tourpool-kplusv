@@ -35,7 +35,7 @@ export default function LoginPage() {
       <div className="w-full max-w-md">
         {/* Header */}
         <div className="mb-8 text-center">
-          <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#1A1A1A]">
+          <div className="mb-4 inline-flex h-16 w-16 items-center justify-center rounded-full bg-[#5760A6]">
             <span className="text-2xl">🚴</span>
           </div>
           <h1 className="text-3xl font-bold text-[#1A1A1A]">
@@ -45,7 +45,7 @@ export default function LoginPage() {
         </div>
 
         {/* Card */}
-        <div className="rounded-2xl border border-[#E5E5E0] bg-white p-8 shadow-sm">
+        <div className="rounded-2xl border border-[#E2DFF0] bg-white p-8 shadow-sm">
           {sent ? (
             <div className="text-center">
               <div className="mb-4 text-4xl">📬</div>
@@ -59,7 +59,7 @@ export default function LoginPage() {
               </p>
               <button
                 onClick={() => { setSent(false); setEmail(""); }}
-                className="mt-6 text-sm text-[#00A651] underline"
+                className="mt-6 text-sm text-[#9462A6] underline"
               >
                 Ander e-mailadres gebruiken
               </button>
@@ -88,7 +88,7 @@ export default function LoginPage() {
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="naam@kplusv.nl"
                     required
-                    className="w-full rounded-lg border border-[#E5E5E0] px-4 py-2.5 text-sm outline-none focus:border-[#00A651] focus:ring-2 focus:ring-[#E8F7EE]"
+                    className="w-full rounded-lg border border-[#E2DFF0] px-4 py-2.5 text-sm outline-none focus:border-[#9462A6] focus:ring-2 focus:ring-[#EDE8F5]"
                   />
                 </div>
 
@@ -101,7 +101,7 @@ export default function LoginPage() {
                 <button
                   type="submit"
                   disabled={loading || !email}
-                  className="w-full rounded-lg bg-[#1A1A1A] px-4 py-2.5 text-sm font-semibold text-[#FFD700] transition hover:bg-[#333] disabled:opacity-50"
+                  className="w-full rounded-lg bg-[#9462A6] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#5760A6] disabled:opacity-50"
                 >
                   {loading ? "Bezig..." : "Inloglink sturen →"}
                 </button>

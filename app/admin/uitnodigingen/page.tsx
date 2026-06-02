@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+﻿import { createClient } from "@/lib/supabase/server";
 import { UitnodigingForm } from "./UitnodigingForm";
 import { CopyButton } from "./CopyButton";
 
@@ -27,10 +27,10 @@ export default async function AdminUitnodigingenPage() {
       {!invitations?.length ? (
         <p className="text-sm text-[#6B7280]">Nog geen uitnodigingen aangemaakt.</p>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-[#E5E5E0] bg-white">
+        <div className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#E5E5E0] bg-[#F9F9F7]">
+              <tr className="border-b border-[#E2DFF0] bg-[#F3F1FA]">
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">E-mail</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Link</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Status</th>
@@ -52,11 +52,11 @@ export default async function AdminUitnodigingenPage() {
                     </td>
                     <td className="px-4 py-3">
                       {inv.used_at ? (
-                        <span className="rounded-full bg-[#E8F7EE] px-2 py-0.5 text-xs font-medium text-[#006B35]">
+                        <span className="rounded-full bg-[#EDE8F5] px-2 py-0.5 text-xs font-medium text-[#5760A6]">
                           Gebruikt
                         </span>
                       ) : (
-                        <span className="rounded-full bg-[#FFF3B0] px-2 py-0.5 text-xs font-medium text-[#92400E]">
+                        <span className="rounded-full bg-[#EDE8F5] px-2 py-0.5 text-xs font-medium text-[#5760A6]">
                           Wacht
                         </span>
                       )}

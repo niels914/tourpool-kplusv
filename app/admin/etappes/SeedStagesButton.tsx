@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -21,7 +21,7 @@ export function SeedStagesButton() {
     <button
       onClick={handleSeed}
       disabled={loading}
-      className="rounded-lg border border-[#E5E5E0] bg-white px-4 py-2 text-sm font-medium text-[#374151] hover:border-[#00A651] disabled:opacity-50"
+      className="rounded-lg border border-[#E2DFF0] bg-white px-4 py-2 text-sm font-medium text-[#374151] hover:border-[#9462A6] disabled:opacity-50"
     >
       {loading ? "Bezig…" : "Etappeschema inladen"}
     </button>

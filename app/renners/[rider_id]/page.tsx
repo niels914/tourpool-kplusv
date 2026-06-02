@@ -102,12 +102,12 @@ export default async function RennerDetailPage({
 
       {/* Wie koos deze renner */}
       <section className="mb-8">
-        <h2 className="mb-3 border-l-4 border-[#FFD700] pl-3 text-xl font-bold text-[#1A1A1A]">
+        <h2 className="mb-3 border-l-4 border-[#9462A6] pl-3 text-xl font-bold text-[#1A1A1A]">
           Gekozen door
         </h2>
 
         {isOpen ? (
-          <div className="rounded-xl border border-dashed border-[#E5E5E0] bg-white p-6 text-center text-sm text-[#6B7280]">
+          <div className="rounded-xl border border-dashed border-[#E2DFF0] bg-white p-6 text-center text-sm text-[#6B7280]">
             <span className="text-2xl">🔒</span>
             <p className="mt-2">
               Wie welke renner heeft gekozen, is pas zichtbaar na de
@@ -124,20 +124,20 @@ export default async function RennerDetailPage({
             )}
           </div>
         ) : pickers.length === 0 ? (
-          <div className="rounded-xl border border-[#E5E5E0] bg-white p-6 text-center text-sm text-[#6B7280]">
+          <div className="rounded-xl border border-[#E2DFF0] bg-white p-6 text-center text-sm text-[#6B7280]">
             Niemand heeft {rider.full_name} gekozen.
           </div>
         ) : (
-          <div className="overflow-hidden rounded-2xl border border-[#E5E5E0] bg-white shadow-sm">
+          <div className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm">
             <div className="divide-y divide-[#F3F4F6]">
               {pickers.map((picker) => (
                 <Link
                   key={picker.user_id}
                   href={`/deelnemers/${picker.user_id}`}
-                  className="flex items-center justify-between px-4 py-3 transition hover:bg-[#FAFAF7]"
+                  className="flex items-center justify-between px-4 py-3 transition hover:bg-[#F8F7FC]"
                 >
                   <div className="flex items-center gap-3">
-                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#E8F7EE] text-sm font-bold text-[#006B35]">
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#EDE8F5] text-sm font-bold text-[#5760A6]">
                       {picker.display_name.charAt(0).toUpperCase()}
                     </div>
                     <span className="font-medium text-[#111827]">
@@ -150,7 +150,7 @@ export default async function RennerDetailPage({
                 </Link>
               ))}
             </div>
-            <div className="border-t border-[#E5E5E0] bg-[#F9F9F7] px-4 py-2.5">
+            <div className="border-t border-[#E2DFF0] bg-[#F3F1FA] px-4 py-2.5">
               <span className="text-xs text-[#6B7280]">
                 {pickers.length}{" "}
                 {pickers.length === 1 ? "deelnemer" : "deelnemers"} ·{" "}
@@ -165,13 +165,13 @@ export default async function RennerDetailPage({
       {/* Etapperesultaten */}
       {lockedResults.length > 0 && (
         <section>
-          <h2 className="mb-3 border-l-4 border-[#FFD700] pl-3 text-xl font-bold text-[#1A1A1A]">
+          <h2 className="mb-3 border-l-4 border-[#9462A6] pl-3 text-xl font-bold text-[#1A1A1A]">
             Resultaten
           </h2>
-          <div className="overflow-hidden rounded-2xl border border-[#E5E5E0] bg-white shadow-sm">
+          <div className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#E5E5E0] bg-[#F9F9F7]">
+                <tr className="border-b border-[#E2DFF0] bg-[#F3F1FA]">
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">
                     Etappe
                   </th>
@@ -197,7 +197,7 @@ export default async function RennerDetailPage({
                       <td className="px-4 py-2.5 text-[#374151]">
                         {RESULT_LABELS[r.result_type] ?? r.result_type}
                       </td>
-                      <td className="px-4 py-2.5 text-right font-semibold text-[#006B35]">
+                      <td className="px-4 py-2.5 text-right font-semibold text-[#5760A6]">
                         {r.position}e
                       </td>
                     </tr>

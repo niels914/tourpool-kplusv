@@ -35,7 +35,6 @@ export function RegistratieForm({
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
-  // Initialiseer met bestaande picks
   const initialSelections: Record<number, string | null> = {};
   SLOTS.forEach((slot) => {
     const pick = currentPicks.find((p) => p.bib_slot === slot);
@@ -48,15 +47,12 @@ export function RegistratieForm({
   const [search, setSearch] = useState("");
   const [message, setMessage] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
-  // Renners per slot
   const ridersBySlot: Record<number, Rider[]> = {};
   SLOTS.forEach((slot) => {
     ridersBySlot[slot] = riders.filter((r) => r.bib_digit === slot);
   });
 
-  // Geselecteerde rider_ids (voor dubbele selectie check)
   const selectedIds = new Set(Object.values(selections).filter(Boolean));
-
   const filledSlots = SLOTS.filter((s) => selections[s]).length;
   const allFilled = filledSlots === 8;
 
@@ -66,11 +62,8 @@ export function RegistratieForm({
     setMessage(null);
 
     const supabase = createClient();
-
-    // Verwijder alle bestaande picks
     await supabase.from("team_picks").delete().eq("user_id", userId);
 
-    // Voeg nieuwe picks in
     const inserts = SLOTS.map((slot) => ({
       user_id: userId,
       rider_id: selections[slot]!,
@@ -111,9 +104,9 @@ export function RegistratieForm({
     <div>
       {/* Voortgangsbalk */}
       <div className="mb-6 flex items-center gap-3">
-        <div className="flex-1 overflow-hidden rounded-full bg-[#E5E5E0]">
+        <div className="flex-1 overflow-hidden rounded-full bg-[#E2DFF0]">
           <div
-            className="h-2 rounded-full bg-[#00A651] transition-all"
+            className="h-2 rounded-full bg-[#9462A6] transition-all"
             style={{ width: `${(filledSlots / 8) * 100}%` }}
           />
         </div>
@@ -133,10 +126,10 @@ export function RegistratieForm({
               key={slot}
               className={`rounded-xl border-2 p-3 transition ${
                 selectedRider
-                  ? "border-[#00A651] bg-[#E8F7EE]"
+                  ? "border-[#9462A6] bg-[#EDE8F5]"
                   : activeSlot === slot
-                  ? "border-[#FFD700] bg-[#FFF3B0]"
-                  : "border-[#E5E5E0] bg-white"
+                  ? "border-[#5760A6] bg-[#EDE8F5]/50"
+                  : "border-[#E2DFF0] bg-white"
               }`}
             >
               <div className="mb-2 flex items-center justify-between">
@@ -163,7 +156,7 @@ export function RegistratieForm({
                   </p>
                   <button
                     onClick={() => { setActiveSlot(slot); setSearch(""); }}
-                    className="mt-2 text-xs text-[#00A651] underline"
+                    className="mt-2 text-xs text-[#9462A6] underline"
                   >
                     Wijzigen
                   </button>
@@ -171,7 +164,7 @@ export function RegistratieForm({
               ) : (
                 <button
                   onClick={() => { setActiveSlot(slot === activeSlot ? null : slot); setSearch(""); }}
-                  className="w-full rounded-lg border border-dashed border-[#6B7280] py-2 text-xs text-[#6B7280] hover:border-[#00A651] hover:text-[#006B35]"
+                  className="w-full rounded-lg border border-dashed border-[#B8AED6] py-2 text-xs text-[#6B7280] hover:border-[#9462A6] hover:text-[#5760A6]"
                 >
                   + Renner kiezen
                 </button>
@@ -183,8 +176,8 @@ export function RegistratieForm({
 
       {/* Renner-picker modal */}
       {activeSlot !== null && (
-        <div className="mb-6 rounded-2xl border border-[#E5E5E0] bg-white shadow-sm">
-          <div className="border-b border-[#E5E5E0] px-4 py-3">
+        <div className="mb-6 rounded-2xl border border-[#E2DFF0] bg-white shadow-sm">
+          <div className="border-b border-[#E2DFF0] px-4 py-3">
             <p className="font-semibold text-[#111827]">
               Slot …{activeSlot} — kies een renner
             </p>
@@ -194,7 +187,7 @@ export function RegistratieForm({
               placeholder="Zoek op naam, ploeg of rugnummer…"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="mt-2 w-full rounded-lg border border-[#E5E5E0] px-3 py-2 text-sm outline-none focus:border-[#00A651]"
+              className="mt-2 w-full rounded-lg border border-[#E2DFF0] px-3 py-2 text-sm outline-none focus:border-[#9462A6]"
             />
           </div>
           <div className="max-h-72 overflow-y-auto">
@@ -208,9 +201,9 @@ export function RegistratieForm({
                     key={rider.id}
                     disabled={alreadyPicked}
                     onClick={() => selectRider(activeSlot, rider.id)}
-                    className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm transition hover:bg-[#F9F9F7] ${
+                    className={`flex w-full items-center justify-between px-4 py-2.5 text-left text-sm transition hover:bg-[#F8F7FC] ${
                       alreadyPicked ? "opacity-40 cursor-not-allowed" : ""
-                    } ${selections[activeSlot] === rider.id ? "bg-[#E8F7EE]" : ""}`}
+                    } ${selections[activeSlot] === rider.id ? "bg-[#EDE8F5]" : ""}`}
                   >
                     <div>
                       <span className="font-medium text-[#111827]">{rider.full_name}</span>
@@ -234,7 +227,7 @@ export function RegistratieForm({
         <div
           className={`mb-4 rounded-lg px-4 py-2.5 text-sm ${
             message.type === "success"
-              ? "bg-[#E8F7EE] text-[#006B35]"
+              ? "bg-[#EDE8F5] text-[#5760A6]"
               : "bg-red-50 text-red-600"
           }`}
         >
@@ -245,7 +238,7 @@ export function RegistratieForm({
       <button
         onClick={handleSave}
         disabled={!allFilled || saving || isPending}
-        className="w-full rounded-xl bg-[#1A1A1A] py-3 text-sm font-semibold text-[#FFD700] transition hover:bg-[#333] disabled:opacity-40"
+        className="w-full rounded-xl bg-[#9462A6] py-3 text-sm font-semibold text-white transition hover:bg-[#5760A6] disabled:opacity-40"
       >
         {saving ? "Opslaan…" : allFilled ? "Ploeg opslaan →" : `Nog ${8 - filledSlots} slot${8 - filledSlots > 1 ? "s" : ""} leeg`}
       </button>

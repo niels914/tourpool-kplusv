@@ -39,14 +39,14 @@ export default async function KlassementPage() {
               : `Na ${lockedStages} van ${totalStages} etappes`}
           </p>
         </div>
-        <div className="rounded-xl bg-[#FFF3B0] px-4 py-2 text-center">
-          <div className="text-2xl font-bold text-[#1A1A1A]">{lockedStages}</div>
+        <div className="rounded-xl bg-[#EDE8F5] px-4 py-2 text-center">
+          <div className="text-2xl font-bold text-[#5760A6]">{lockedStages}</div>
           <div className="text-xs text-[#6B7280]">etappes</div>
         </div>
       </div>
 
       {registrationClosed && (
-        <div className="mb-4 flex items-center gap-2 rounded-xl bg-[#E8F7EE] px-4 py-2.5 text-sm text-[#006B35]">
+        <div className="mb-4 flex items-center gap-2 rounded-xl bg-[#EDE8F5] px-4 py-2.5 text-sm text-[#5760A6]">
           <span>👥</span>
           <span>Registratie gesloten — klik op een naam om de ploeg te bekijken</span>
         </div>
@@ -55,10 +55,10 @@ export default async function KlassementPage() {
       {!klassement || klassement.length === 0 ? (
         <EmptyState />
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-[#E5E5E0] bg-white shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-[#E5E5E0] bg-[#F9F9F7]">
+              <tr className="border-b border-[#E2DFF0] bg-[#F3F1FA]">
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">
                   #
                 </th>
@@ -80,7 +80,7 @@ export default async function KlassementPage() {
               {klassement.map((entry, i) => (
                 <tr
                   key={entry.user_id}
-                  className={`border-b border-[#F3F4F6] transition hover:bg-[#FAFAF7] ${
+                  className={`border-b border-[#F3F4F6] transition hover:bg-[#F8F7FC] ${
                     i === 0 ? "bg-[#FFFBEB]" : ""
                   }`}
                 >
@@ -91,7 +91,7 @@ export default async function KlassementPage() {
                     {registrationClosed ? (
                       <Link
                         href={`/deelnemers/${entry.user_id}`}
-                        className="font-medium text-[#111827] hover:text-[#00A651] hover:underline"
+                        className="font-medium text-[#111827] hover:text-[#9462A6] hover:underline"
                       >
                         {entry.display_name}
                       </Link>
@@ -141,7 +141,7 @@ function RankBadge({ rank }: { rank: number }) {
 
 function EmptyState() {
   return (
-    <div className="rounded-2xl border border-dashed border-[#E5E5E0] bg-white p-12 text-center">
+    <div className="rounded-2xl border border-dashed border-[#E2DFF0] bg-white p-12 text-center">
       <div className="mb-3 text-4xl">🚴</div>
       <p className="font-medium text-[#111827]">Nog geen deelnemers</p>
       <p className="mt-1 text-sm text-[#6B7280]">

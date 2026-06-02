@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+﻿import { createClient } from "@/lib/supabase/server";
 import { SyncStartlistButton } from "./SyncStartlistButton";
 import { RiderEditRow } from "./RiderEditRow";
 
@@ -26,7 +26,7 @@ export default async function AdminRennersPage() {
       </div>
 
       {missingSlots.length > 0 && (
-        <div className="mb-4 rounded-xl border border-[#FFD700] bg-[#FFF3B0] px-4 py-3 text-sm text-[#92400E]">
+        <div className="mb-4 rounded-xl border border-[#FFD700] bg-[#EDE8F5] px-4 py-3 text-sm text-[#5760A6]">
           ⚠ Geen renners voor slot(s): {missingSlots.map((s) => `…${s}`).join(", ")}
         </div>
       )}
@@ -37,7 +37,7 @@ export default async function AdminRennersPage() {
           <div
             key={slot}
             className={`rounded-lg p-2 text-center text-xs ${
-              slotCoverage[slot] ? "bg-[#E8F7EE] text-[#006B35]" : "bg-red-50 text-red-600"
+              slotCoverage[slot] ? "bg-[#EDE8F5] text-[#5760A6]" : "bg-red-50 text-red-600"
             }`}
           >
             <div className="font-bold">…{slot}</div>
@@ -50,10 +50,10 @@ export default async function AdminRennersPage() {
         {riders?.length ?? 0} renners geladen
       </div>
 
-      <div className="overflow-hidden rounded-2xl border border-[#E5E5E0] bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm">
         <table className="w-full text-sm">
           <thead>
-            <tr className="border-b border-[#E5E5E0] bg-[#F9F9F7]">
+            <tr className="border-b border-[#E2DFF0] bg-[#F3F1FA]">
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">#</th>
               <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Naam</th>
               <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280] sm:table-cell">Ploeg</th>

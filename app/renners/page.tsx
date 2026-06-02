@@ -53,7 +53,7 @@ export default async function RennersPage() {
       </div>
 
       {!riders?.length ? (
-        <div className="rounded-2xl border border-dashed border-[#E5E5E0] bg-white p-12 text-center">
+        <div className="rounded-2xl border border-dashed border-[#E2DFF0] bg-white p-12 text-center">
           <div className="mb-3 text-4xl">🚴</div>
           <p className="text-[#6B7280]">De startlijst is nog niet geladen.</p>
         </div>
@@ -62,9 +62,9 @@ export default async function RennersPage() {
           {sortedTeams.map(([teamName, teamRiders]) => (
             <div
               key={teamName}
-              className="overflow-hidden rounded-2xl border border-[#E5E5E0] bg-white shadow-sm"
+              className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm"
             >
-              <div className="border-b border-[#E5E5E0] bg-[#F9F9F7] px-4 py-3">
+              <div className="border-b border-[#E2DFF0] bg-[#F3F1FA] px-4 py-3">
                 <h2 className="font-semibold text-[#111827]">{teamName}</h2>
               </div>
               <div className="divide-y divide-[#F3F4F6]">
@@ -76,7 +76,7 @@ export default async function RennersPage() {
                     <Link
                       key={rider.id}
                       href={`/renners/${rider.id}`}
-                      className={`flex items-center justify-between px-4 py-3 transition hover:bg-[#FAFAF7] ${
+                      className={`flex items-center justify-between px-4 py-3 transition hover:bg-[#F8F7FC] ${
                         isOut ? "opacity-40" : ""
                       }`}
                     >
@@ -135,16 +135,16 @@ function PickBar({ count }: { count: number }) {
 
   return (
     <div className="flex items-center gap-2">
-      <div className="hidden w-20 overflow-hidden rounded-full bg-[#E5E5E0] sm:block" style={{ height: 6 }}>
+      <div className="hidden w-20 overflow-hidden rounded-full bg-[#E2DFF0] sm:block" style={{ height: 6 }}>
         <div
-          className="h-full rounded-full bg-[#00A651] transition-all"
+          className="h-full rounded-full bg-[#9462A6] transition-all"
           style={{ width: count > 0 ? `${width}%` : "0%" }}
         />
       </div>
       <span
         className={`min-w-[2rem] rounded-full px-2.5 py-0.5 text-center text-xs font-semibold ${
           count > 0
-            ? "bg-[#E8F7EE] text-[#006B35]"
+            ? "bg-[#EDE8F5] text-[#5760A6]"
             : "bg-[#F3F4F6] text-[#9CA3AF]"
         }`}
       >

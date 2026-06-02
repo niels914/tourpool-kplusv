@@ -22,7 +22,7 @@ export default function SpelregelsPage() {
         </p>
         <div className="mb-4 grid grid-cols-4 gap-2 sm:grid-cols-8">
           {[1,2,3,4,5,6,7,8].map((d) => (
-            <div key={d} className="rounded-lg border border-[#E5E5E0] bg-white p-2 text-center">
+            <div key={d} className="rounded-lg border border-[#E2DFF0] bg-white p-2 text-center">
               <div className="text-lg font-bold text-[#FFD700]" style={{ WebkitTextStroke: "1px #1A1A1A" }}>…{d}</div>
               <div className="text-xs text-[#6B7280]">slot {d}</div>
             </div>
@@ -57,7 +57,7 @@ export default function SpelregelsPage() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#E5E5E0] text-[#6B7280]">
+              <tr className="border-b border-[#E2DFF0] text-[#6B7280]">
                 <th className="pb-2 text-left">Klassement</th>
                 <th className="pb-2 text-center">1e</th>
                 <th className="pb-2 text-center">2e</th>
@@ -109,7 +109,7 @@ export default function SpelregelsPage() {
           dezelfde renner heeft gekozen. Hoe minder populair een renner, hoe meer jij verdient als
           hij presteert.
         </p>
-        <div className="mb-4 rounded-xl bg-[#FFF3B0] p-5 text-sm">
+        <div className="mb-4 rounded-xl bg-[#EDE8F5] p-5 text-sm">
           <p className="mb-2 font-semibold">Voorbeeld:</p>
           <p>
             Pogacar wordt gekozen door <strong>9 deelnemers</strong>. Hij wint de etappe (15
@@ -160,7 +160,7 @@ export default function SpelregelsPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mb-8">
-      <h2 className="mb-3 border-l-4 border-[#FFD700] pl-3 text-xl font-bold text-[#1A1A1A]">
+      <h2 className="mb-3 border-l-4 border-[#9462A6] pl-3 text-xl font-bold text-[#1A1A1A]">
         {title}
       </h2>
       <div className="text-[#374151] leading-relaxed">{children}</div>
@@ -173,7 +173,7 @@ function PointsTable({ headers, rows }: { headers: string[]; rows: string[][] })
     <div className="overflow-x-auto">
       <table className="w-full text-sm">
         <thead>
-          <tr className="border-b border-[#E5E5E0] text-[#6B7280]">
+          <tr className="border-b border-[#E2DFF0] text-[#6B7280]">
             {headers.map((h) => (
               <th key={h} className="pb-2 text-left">{h}</th>
             ))}

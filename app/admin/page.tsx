@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+﻿import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 
 export default async function AdminDashboard() {
@@ -36,7 +36,7 @@ export default async function AdminDashboard() {
       </div>
 
       {/* Status */}
-      <div className="mb-8 rounded-xl border border-[#E5E5E0] bg-white p-5">
+      <div className="mb-8 rounded-xl border border-[#E2DFF0] bg-white p-5">
         <h2 className="mb-3 font-semibold text-[#111827]">Status</h2>
         <div className="space-y-2 text-sm">
           <StatusRow
@@ -63,8 +63,8 @@ export default async function AdminDashboard() {
 
       {/* Acties */}
       {pendingStages.length > 0 && (
-        <div className="mb-6 rounded-xl border border-[#FFD700] bg-[#FFF3B0] p-5">
-          <h2 className="mb-2 font-semibold text-[#92400E]">
+        <div className="mb-6 rounded-xl border border-[#FFD700] bg-[#EDE8F5] p-5">
+          <h2 className="mb-2 font-semibold text-[#5760A6]">
             Actie vereist — {pendingStages.length} etappe{pendingStages.length > 1 ? "s" : ""} wacht op vergrendeling
           </h2>
           <div className="flex flex-wrap gap-2">
@@ -72,7 +72,7 @@ export default async function AdminDashboard() {
               <Link
                 key={s.stage_number}
                 href={`/admin/etappes?stage=${s.stage_number}`}
-                className="rounded-lg bg-[#92400E] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#78350F]"
+                className="rounded-lg bg-[#5760A6] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#78350F]"
               >
                 Etappe {s.stage_number} bekijken →
               </Link>
@@ -92,7 +92,7 @@ export default async function AdminDashboard() {
           <Link
             key={link.href}
             href={link.href}
-            className="rounded-xl border border-[#E5E5E0] bg-white p-4 text-sm font-medium text-[#374151] hover:border-[#00A651] hover:text-[#006B35] transition"
+            className="rounded-xl border border-[#E2DFF0] bg-white p-4 text-sm font-medium text-[#374151] hover:border-[#9462A6] hover:text-[#5760A6] transition"
           >
             {link.label} →
           </Link>
@@ -104,7 +104,7 @@ export default async function AdminDashboard() {
 
 function StatCard({ label, value, highlight }: { label: string; value: number; highlight?: boolean }) {
   return (
-    <div className={`rounded-xl border p-4 ${highlight ? "border-[#FFD700] bg-[#FFF3B0]" : "border-[#E5E5E0] bg-white"}`}>
+    <div className={`rounded-xl border p-4 ${highlight ? "border-[#FFD700] bg-[#EDE8F5]" : "border-[#E2DFF0] bg-white"}`}>
       <div className="text-2xl font-bold text-[#111827]">{value}</div>
       <div className="text-xs text-[#6B7280]">{label}</div>
     </div>
@@ -115,7 +115,7 @@ function StatusRow({ label, value, ok }: { label: string; value: string; ok: boo
   return (
     <div className="flex items-center justify-between">
       <span className="text-[#374151]">{label}</span>
-      <span className={`flex items-center gap-1.5 ${ok ? "text-[#006B35]" : "text-[#92400E]"}`}>
+      <span className={`flex items-center gap-1.5 ${ok ? "text-[#5760A6]" : "text-[#5760A6]"}`}>
         <span>{ok ? "✓" : "⚠"}</span>
         <span>{value}</span>
       </span>

@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+﻿import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 
 export const revalidate = 300;
@@ -30,14 +30,14 @@ export default async function EtappesPage() {
       <p className="mb-8 text-[#6B7280]">Tour de France 2026 — 27 juni t/m 20 juli</p>
 
       {!stages || stages.length === 0 ? (
-        <div className="rounded-2xl border border-dashed border-[#E5E5E0] bg-white p-12 text-center">
+        <div className="rounded-2xl border border-dashed border-[#E2DFF0] bg-white p-12 text-center">
           <p className="text-[#6B7280]">Het etappeschema is nog niet geladen.</p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-[#E5E5E0] bg-white shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#E5E5E0] bg-[#F9F9F7]">
+              <tr className="border-b border-[#E2DFF0] bg-[#F3F1FA]">
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Et.</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Datum</th>
                 <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280] sm:table-cell">Route</th>
@@ -54,7 +54,7 @@ export default async function EtappesPage() {
                 const Row = (
                   <tr
                     key={stage.id}
-                    className={`border-b border-[#F3F4F6] ${isClickable ? "cursor-pointer hover:bg-[#FAFAF7]" : ""}`}
+                    className={`border-b border-[#F3F4F6] ${isClickable ? "cursor-pointer hover:bg-[#F8F7FC]" : ""}`}
                   >
                     <td className="px-4 py-3 font-medium text-[#111827]">
                       {stage.stage_number}

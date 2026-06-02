@@ -103,7 +103,7 @@ export default async function DeelnemerPage({
         </div>
 
         {picks.length === 0 ? (
-          <div className="rounded-2xl border border-dashed border-[#E5E5E0] bg-white p-12 text-center">
+          <div className="rounded-2xl border border-dashed border-[#E2DFF0] bg-white p-12 text-center">
             <div className="mb-3 text-4xl">🚴</div>
             <p className="text-[#6B7280]">Je hebt nog geen ploeg samengesteld.</p>
             <Link
@@ -114,10 +114,10 @@ export default async function DeelnemerPage({
             </Link>
           </div>
         ) : (
-          <div className="overflow-hidden rounded-2xl border border-[#E5E5E0] bg-white shadow-sm">
+          <div className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm">
             <table className="w-full text-sm">
               <thead>
-                <tr className="border-b border-[#E5E5E0] bg-[#F9F9F7]">
+                <tr className="border-b border-[#E2DFF0] bg-[#F3F1FA]">
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Slot</th>
                   <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Renner</th>
                   <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280] sm:table-cell">Ploeg</th>
@@ -136,7 +136,7 @@ export default async function DeelnemerPage({
                         </span>
                       </td>
                       <td className="px-4 py-3">
-                        <Link href={`/renners/${pick.rider_id}`} className="font-medium text-[#111827] hover:text-[#00A651] hover:underline">
+                        <Link href={`/renners/${pick.rider_id}`} className="font-medium text-[#111827] hover:text-[#9462A6] hover:underline">
                           {pick.rider_name}
                         </Link>
                         <p className="text-xs text-[#6B7280]">#{pick.bib_number}</p>
@@ -155,7 +155,7 @@ export default async function DeelnemerPage({
                 })}
               </tbody>
               <tfoot>
-                <tr className="bg-[#F9F9F7]">
+                <tr className="bg-[#F3F1FA]">
                   <td colSpan={4} className="px-4 py-3 text-right text-sm font-semibold text-[#374151]">Totaal</td>
                   <td className="px-4 py-3 text-right text-lg font-bold text-[#111827]">{totalPoints.toFixed(2)}</td>
                 </tr>
@@ -200,15 +200,15 @@ export default async function DeelnemerPage({
           Vergelijking
         </h1>
         <div className="flex gap-3">
-          <div className="flex-1 rounded-xl border border-[#E5E5E0] bg-white px-4 py-3 text-center sm:min-w-[140px]">
-            <div className={`text-xl font-bold ${ownTotal > totalPoints ? "text-[#00A651]" : "text-[#1A1A1A]"}`}>
+          <div className="flex-1 rounded-xl border border-[#E2DFF0] bg-white px-4 py-3 text-center sm:min-w-[140px]">
+            <div className={`text-xl font-bold ${ownTotal > totalPoints ? "text-[#9462A6]" : "text-[#1A1A1A]"}`}>
               {ownTotal.toFixed(2)}
             </div>
             <div className="truncate text-xs text-[#6B7280]">{ownName}</div>
           </div>
           <div className="flex items-center text-sm font-semibold text-[#6B7280]">vs</div>
-          <div className="flex-1 rounded-xl border border-[#E5E5E0] bg-white px-4 py-3 text-center sm:min-w-[140px]">
-            <div className={`text-xl font-bold ${totalPoints > ownTotal ? "text-[#00A651]" : "text-[#1A1A1A]"}`}>
+          <div className="flex-1 rounded-xl border border-[#E2DFF0] bg-white px-4 py-3 text-center sm:min-w-[140px]">
+            <div className={`text-xl font-bold ${totalPoints > ownTotal ? "text-[#9462A6]" : "text-[#1A1A1A]"}`}>
               {totalPoints.toFixed(2)}
             </div>
             <div className="truncate text-xs text-[#6B7280]">{profile.display_name}</div>
@@ -217,9 +217,9 @@ export default async function DeelnemerPage({
       </div>
 
       {/* Vergelijkingstabel */}
-      <div className="overflow-hidden rounded-2xl border border-[#E5E5E0] bg-white shadow-sm">
+      <div className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm">
         {/* Headers */}
-        <div className="grid grid-cols-[2.5rem_1fr_5rem_2.5rem_1fr_5rem] gap-0 border-b border-[#E5E5E0] bg-[#F9F9F7] px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[#6B7280]">
+        <div className="grid grid-cols-[2.5rem_1fr_5rem_2.5rem_1fr_5rem] gap-0 border-b border-[#E2DFF0] bg-[#F3F1FA] px-4 py-3 text-xs font-semibold uppercase tracking-wide text-[#6B7280]">
           <div></div>
           <div>{ownName}</div>
           <div className="text-right">Punten</div>
@@ -249,12 +249,12 @@ export default async function DeelnemerPage({
               </div>
 
               {/* Eigen renner */}
-              <div className={`rounded-lg px-2 py-1 ${ownWins ? "bg-[#E8F7EE]" : ""}`}>
+              <div className={`rounded-lg px-2 py-1 ${ownWins ? "bg-[#EDE8F5]" : ""}`}>
                 {own ? (
                   <>
                     <Link
                       href={`/renners/${own.rider_id}`}
-                      className="block text-sm font-medium text-[#111827] hover:text-[#00A651] hover:underline"
+                      className="block text-sm font-medium text-[#111827] hover:text-[#9462A6] hover:underline"
                     >
                       {own.rider_name}
                     </Link>
@@ -266,7 +266,7 @@ export default async function DeelnemerPage({
               </div>
 
               {/* Eigen punten */}
-              <div className={`text-right text-sm font-bold ${ownWins ? "text-[#00A651]" : "text-[#374151]"}`}>
+              <div className={`text-right text-sm font-bold ${ownWins ? "text-[#9462A6]" : "text-[#374151]"}`}>
                 {ownPts > 0 ? ownPts.toFixed(2) : "—"}
               </div>
 
@@ -274,12 +274,12 @@ export default async function DeelnemerPage({
               <div className="text-center text-xs text-[#D1D5DB]">vs</div>
 
               {/* Hun renner */}
-              <div className={`rounded-lg px-2 py-1 ${theirWins ? "bg-[#E8F7EE]" : ""}`}>
+              <div className={`rounded-lg px-2 py-1 ${theirWins ? "bg-[#EDE8F5]" : ""}`}>
                 {their ? (
                   <>
                     <Link
                       href={`/renners/${their.rider_id}`}
-                      className="block text-sm font-medium text-[#111827] hover:text-[#00A651] hover:underline"
+                      className="block text-sm font-medium text-[#111827] hover:text-[#9462A6] hover:underline"
                     >
                       {their.rider_name}
                     </Link>
@@ -291,7 +291,7 @@ export default async function DeelnemerPage({
               </div>
 
               {/* Hun punten */}
-              <div className={`text-right text-sm font-bold ${theirWins ? "text-[#00A651]" : "text-[#374151]"}`}>
+              <div className={`text-right text-sm font-bold ${theirWins ? "text-[#9462A6]" : "text-[#374151]"}`}>
                 {theirPts > 0 ? theirPts.toFixed(2) : "—"}
               </div>
             </div>
@@ -299,15 +299,15 @@ export default async function DeelnemerPage({
         })}
 
         {/* Totaalrij */}
-        <div className="grid grid-cols-[2.5rem_1fr_5rem_2.5rem_1fr_5rem] items-center gap-0 border-t-2 border-[#E5E5E0] bg-[#F9F9F7] px-4 py-3">
+        <div className="grid grid-cols-[2.5rem_1fr_5rem_2.5rem_1fr_5rem] items-center gap-0 border-t-2 border-[#E2DFF0] bg-[#F3F1FA] px-4 py-3">
           <div></div>
           <div className="text-sm font-semibold text-[#374151]">Totaal</div>
-          <div className={`text-right text-base font-bold ${ownTotal > totalPoints ? "text-[#00A651]" : "text-[#111827]"}`}>
+          <div className={`text-right text-base font-bold ${ownTotal > totalPoints ? "text-[#9462A6]" : "text-[#111827]"}`}>
             {ownTotal.toFixed(2)}
           </div>
           <div></div>
           <div className="text-sm font-semibold text-[#374151]">Totaal</div>
-          <div className={`text-right text-base font-bold ${totalPoints > ownTotal ? "text-[#00A651]" : "text-[#111827]"}`}>
+          <div className={`text-right text-base font-bold ${totalPoints > ownTotal ? "text-[#9462A6]" : "text-[#111827]"}`}>
             {totalPoints.toFixed(2)}
           </div>
         </div>

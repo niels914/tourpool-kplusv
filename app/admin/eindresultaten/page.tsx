@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+﻿import { createClient } from "@/lib/supabase/server";
 import { EindresultaatForm } from "./EindresultaatForm";
 
 const CLASSIFICATIONS = [
@@ -66,7 +66,7 @@ export default async function AdminEindresultatenPage() {
       </div>
 
       {allSaved && (
-        <div className="mb-6 flex items-center gap-2 rounded-xl bg-[#E8F7EE] px-4 py-3 text-sm text-[#006B35]">
+        <div className="mb-6 flex items-center gap-2 rounded-xl bg-[#EDE8F5] px-4 py-3 text-sm text-[#5760A6]">
           <span>✓</span>
           <span>
             Alle eindresultaten zijn ingevoerd. Bonuspunten zijn verwerkt in
@@ -79,9 +79,9 @@ export default async function AdminEindresultatenPage() {
         {CLASSIFICATIONS.map((cls) => (
           <div
             key={cls.key}
-            className="overflow-hidden rounded-2xl border border-[#E5E5E0] bg-white shadow-sm"
+            className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm"
           >
-            <div className="border-b border-[#E5E5E0] bg-[#F9F9F7] px-4 py-3">
+            <div className="border-b border-[#E2DFF0] bg-[#F3F1FA] px-4 py-3">
               <h2 className="font-semibold text-[#111827]">
                 {cls.emoji} {cls.label}
               </h2>

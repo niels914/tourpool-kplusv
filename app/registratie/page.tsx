@@ -60,7 +60,7 @@ export default async function RegistratiePage() {
 function DeadlineBanner({ deadline }: { deadline: Date | null }) {
   if (!deadline) return null;
   return (
-    <div className="mb-6 flex items-center gap-3 rounded-xl bg-[#FFF3B0] px-4 py-3 text-sm">
+    <div className="mb-6 flex items-center gap-3 rounded-xl bg-[#EDE8F5] px-4 py-3 text-sm">
       <span className="text-lg">⏰</span>
       <span>
         <strong>Deadline:</strong>{" "}
@@ -87,7 +87,7 @@ function RegistratieGesloten({ picks }: { picks: unknown[] | null }) {
         </span>
       </div>
       {picks && picks.length > 0 ? (
-        <div className="rounded-2xl border border-[#E5E5E0] bg-white p-6">
+        <div className="rounded-2xl border border-[#E2DFF0] bg-white p-6">
           <p className="mb-4 font-semibold text-[#111827]">Jouw ploeg:</p>
           <div className="space-y-2">
             {picks.map((pick: unknown) => {

@@ -1,4 +1,4 @@
-import { createClient } from "@/lib/supabase/server";
+﻿import { createClient } from "@/lib/supabase/server";
 import { StageRow } from "./StageRow";
 import { SeedStagesButton } from "./SeedStagesButton";
 
@@ -20,14 +20,14 @@ export default async function AdminEtappesPage() {
       </div>
 
       {!stages?.length ? (
-        <div className="rounded-2xl border border-dashed border-[#E5E5E0] bg-white p-12 text-center">
+        <div className="rounded-2xl border border-dashed border-[#E2DFF0] bg-white p-12 text-center">
           <p className="text-[#6B7280]">Geen etappes geladen. Gebruik de knop hierboven om het schema in te laden.</p>
         </div>
       ) : (
-        <div className="overflow-hidden rounded-2xl border border-[#E5E5E0] bg-white shadow-sm">
+        <div className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-[#E5E5E0] bg-[#F9F9F7]">
+              <tr className="border-b border-[#E2DFF0] bg-[#F3F1FA]">
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Et.</th>
                 <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Datum</th>
                 <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280] sm:table-cell">Route</th>

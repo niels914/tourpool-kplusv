@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -66,8 +66,8 @@ export function StageRow({ stage }: { stage: Stage }) {
       </td>
       <td className="px-4 py-2.5 text-center">
         <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-          stage.status === "locked" ? "bg-[#E8F7EE] text-[#006B35]" :
-          stage.status === "results_pending" ? "bg-[#FFF3B0] text-[#92400E]" :
+          stage.status === "locked" ? "bg-[#EDE8F5] text-[#5760A6]" :
+          stage.status === "results_pending" ? "bg-[#EDE8F5] text-[#5760A6]" :
           stage.status === "live" ? "bg-red-100 text-red-700" :
           "bg-gray-100 text-gray-600"
         }`}>
@@ -80,7 +80,7 @@ export function StageRow({ stage }: { stage: Stage }) {
             <button
               onClick={syncResults}
               disabled={loading}
-              className="rounded px-2.5 py-1 text-xs font-medium bg-[#E8F7EE] text-[#006B35] hover:bg-[#D1FAE5] disabled:opacity-50"
+              className="rounded px-2.5 py-1 text-xs font-medium bg-[#EDE8F5] text-[#5760A6] hover:bg-[#D1FAE5] disabled:opacity-50"
             >
               {loading ? "…" : "Sync"}
             </button>

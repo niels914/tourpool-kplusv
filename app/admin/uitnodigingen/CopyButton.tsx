@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 
@@ -26,7 +26,7 @@ export function CopyButton({ text }: { text: string }) {
   return (
     <button
       onClick={handleCopy}
-      className="text-xs text-[#00A651] underline hover:text-[#006B35]"
+      className="text-xs text-[#9462A6] underline hover:text-[#5760A6]"
       title={text}
     >
       {copied ? "✓ Gekopieerd!" : "Kopieer link"}

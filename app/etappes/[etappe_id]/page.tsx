@@ -73,7 +73,7 @@ export default async function EtappeDetailPage({
       </div>
 
       {stage.status !== "locked" ? (
-        <div className="rounded-2xl border border-dashed border-[#E5E5E0] bg-white p-12 text-center">
+        <div className="rounded-2xl border border-dashed border-[#E2DFF0] bg-white p-12 text-center">
           <p className="text-[#6B7280]">
             Uitslagen zijn nog niet beschikbaar voor deze etappe.
           </p>
@@ -84,8 +84,8 @@ export default async function EtappeDetailPage({
             const typeResults = grouped[type];
             if (!typeResults?.length) return null;
             return (
-              <div key={type} className="rounded-2xl border border-[#E5E5E0] bg-white overflow-hidden">
-                <div className="border-b border-[#E5E5E0] bg-[#F9F9F7] px-4 py-3">
+              <div key={type} className="rounded-2xl border border-[#E2DFF0] bg-white overflow-hidden">
+                <div className="border-b border-[#E2DFF0] bg-[#F3F1FA] px-4 py-3">
                   <h2 className="font-semibold text-[#111827]">
                     {emoji} {label}
                   </h2>
@@ -122,7 +122,7 @@ export default async function EtappeDetailPage({
                           <td className="hidden px-4 py-2 text-[#6B7280] sm:table-cell">
                             {rider?.team_name ?? "—"}
                           </td>
-                          <td className="px-4 py-2 text-right font-semibold text-[#006B35]">
+                          <td className="px-4 py-2 text-right font-semibold text-[#5760A6]">
                             {raw}
                           </td>
                         </tr>

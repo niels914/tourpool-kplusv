@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -96,10 +96,10 @@ export function EindresultaatForm({
               onChange={(e) =>
                 setSelections((prev) => ({ ...prev, [pos]: e.target.value }))
               }
-              className={`flex-1 rounded-lg border px-3 py-2 text-sm outline-none transition focus:border-[#00A651] focus:ring-1 focus:ring-[#E8F7EE] ${
+              className={`flex-1 rounded-lg border px-3 py-2 text-sm outline-none transition focus:border-[#9462A6] focus:ring-1 focus:ring-[#EDE8F5] ${
                 isSelected
-                  ? "border-[#00A651] bg-[#E8F7EE] text-[#006B35]"
-                  : "border-[#E5E5E0] bg-white text-[#374151]"
+                  ? "border-[#9462A6] bg-[#EDE8F5] text-[#5760A6]"
+                  : "border-[#E2DFF0] bg-white text-[#374151]"
               }`}
             >
               <option value="">— Kies een renner —</option>
@@ -136,7 +136,7 @@ export function EindresultaatForm({
           <span
             className={`text-sm ${
               message.type === "success"
-                ? "text-[#006B35]"
+                ? "text-[#5760A6]"
                 : "text-red-600"
             }`}
           >

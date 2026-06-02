@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -33,7 +33,7 @@ export function SyncStartlistButton() {
       <button
         onClick={handleSync}
         disabled={loading}
-        className="rounded-lg bg-[#00A651] px-4 py-2 text-sm font-semibold text-white hover:bg-[#006B35] disabled:opacity-50"
+        className="rounded-lg bg-[#9462A6] px-4 py-2 text-sm font-semibold text-white hover:bg-[#5760A6] disabled:opacity-50"
       >
         {loading ? "Bezig…" : "Startlijst synchroniseren"}
       </button>
