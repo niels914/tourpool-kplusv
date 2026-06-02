@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { UitnodigingForm } from "./UitnodigingForm";
+import { CopyButton } from "./CopyButton";
 
 export default async function AdminUitnodigingenPage() {
   const supabase = await createClient();
@@ -46,13 +47,7 @@ export default async function AdminUitnodigingenPage() {
                       {inv.used_at ? (
                         <span className="text-[#6B7280]">Gebruikt</span>
                       ) : (
-                        <button
-                          onClick={() => navigator.clipboard.writeText(inviteUrl)}
-                          className="truncate max-w-[200px] text-[#00A651] underline text-xs"
-                          title={inviteUrl}
-                        >
-                          Kopieer link
-                        </button>
+                        <CopyButton text={inviteUrl} />
                       )}
                     </td>
                     <td className="px-4 py-3">
