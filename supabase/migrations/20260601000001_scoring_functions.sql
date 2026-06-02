@@ -142,7 +142,7 @@ select
   r.full_name as rider_name,
   r.bib_number,
   r.team_name,
-  r.bib_slot,
+  tp.bib_slot,
   coalesce(rpc.pick_count, 1) as pick_count,
   coalesce(sum(srp.raw_points / sqrt(rpc.pick_count)), 0) as weighted_stage_points,
   coalesce(
@@ -154,4 +154,4 @@ join public.riders r on r.id = tp.rider_id
 left join public.rider_pick_counts rpc on rpc.rider_id = tp.rider_id
 left join public.stage_raw_points srp on srp.rider_id = tp.rider_id
 left join public.final_results fr on fr.rider_id = tp.rider_id
-group by tp.user_id, tp.rider_id, r.full_name, r.bib_number, r.team_name, r.bib_slot, rpc.pick_count;
+group by tp.user_id, tp.rider_id, r.full_name, r.bib_number, r.team_name, tp.bib_slot, rpc.pick_count;
