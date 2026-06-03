@@ -8,6 +8,7 @@ const adminLinks = [
   { href: "/admin/renners", label: "Renners / startlijst" },
   { href: "/admin/etappes", label: "Etappes" },
   { href: "/admin/eindresultaten", label: "Eindresultaten" },
+  { href: "/admin/verslagen", label: "Verslagen" },
   { href: "/admin/uitnodigingen", label: "Uitnodigingen" },
 ];
 

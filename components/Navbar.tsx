@@ -10,6 +10,8 @@ const navLinks = [
   { href: "/klassement", label: "Klassement" },
   { href: "/etappes", label: "Etappes" },
   { href: "/renners", label: "Renners" },
+  { href: "/verslagen", label: "Verslagen" },
+  { href: "/chat", label: "Chat" },
   { href: "/mijn-team", label: "Mijn ploeg" },
   { href: "/spelregels", label: "Spelregels" },
 ];
