@@ -50,15 +50,27 @@ export default async function RennerDetailPage({
   }
 
   // Punten die deze renner heeft opgeleverd (per etappe, vergrendelde etappes)
-  const { data: stageResults } = await supabase
-    .from("stage_results")
-    .select("position, result_type, stages(stage_number, stage_date, status)")
-    .eq("rider_id", rider_id)
-    .order("stage_id", { ascending: true });
+  const [{ data: stageResults }, { data: pickCountRow }] = await Promise.all([
+    supabase
+      .from("stage_results")
+      .select("position, result_type, stages(stage_number, stage_date, status)")
+      .eq("rider_id", rider_id),
+    supabase
+      .from("rider_pick_counts")
+      .select("pick_count")
+      .eq("rider_id", rider_id)
+      .single(),
+  ]);
 
-  const lockedResults = (stageResults ?? []).filter(
-    (r) => (r.stages as unknown as { status: string } | null)?.status === "locked"
-  );
+  const pickCount = Number(pickCountRow?.pick_count ?? 1);
+
+  const lockedResults = (stageResults ?? [])
+    .filter((r) => (r.stages as unknown as { status: string } | null)?.status === "locked")
+    .sort((a, b) => {
+      const sa = (a.stages as unknown as { stage_number: number } | null)?.stage_number ?? 0;
+      const sb = (b.stages as unknown as { stage_number: number } | null)?.stage_number ?? 0;
+      return sa !== sb ? sa - sb : 0;
+    });
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
@@ -182,38 +194,40 @@ export default async function RennerDetailPage({
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b border-[#E2DFF0] bg-[#F3F1FA]">
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">
-                    Etappe
-                  </th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">
-                    Categorie
-                  </th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-[#6B7280]">
-                    Positie
-                  </th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Etappe</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Categorie</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Pos.</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Ptn</th>
+                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-[#9462A6]">÷√{pickCount}</th>
                 </tr>
               </thead>
               <tbody>
                 {lockedResults.map((r, i) => {
-                  const stage = r.stages as unknown as {
-                    stage_number: number;
-                    stage_date: string;
-                  } | null;
+                  const stage = r.stages as unknown as { stage_number: number; stage_date: string } | null;
+                  const raw = calcRawPoints(r.result_type, r.position);
+                  const weighted = raw / Math.sqrt(Math.max(pickCount, 1));
                   return (
                     <tr key={i} className="border-b border-[#F3F4F6]">
-                      <td className="px-4 py-2.5 font-medium text-[#111827]">
-                        Et. {stage?.stage_number ?? "—"}
-                      </td>
-                      <td className="px-4 py-2.5 text-[#374151]">
-                        {RESULT_LABELS[r.result_type] ?? r.result_type}
-                      </td>
-                      <td className="px-4 py-2.5 text-right font-semibold text-[#5760A6]">
-                        {r.position}e
-                      </td>
+                      <td className="px-4 py-2.5 font-medium text-[#111827]">Et. {stage?.stage_number ?? "—"}</td>
+                      <td className="px-4 py-2.5 text-[#374151]">{RESULT_LABELS[r.result_type] ?? r.result_type}</td>
+                      <td className="px-4 py-2.5 text-right font-semibold text-[#5760A6]">{r.position}e</td>
+                      <td className="px-4 py-2.5 text-right text-[#374151]">{raw > 0 ? raw : "—"}</td>
+                      <td className="px-4 py-2.5 text-right font-semibold text-[#9462A6]">{weighted > 0 ? weighted.toFixed(2) : "—"}</td>
                     </tr>
                   );
                 })}
               </tbody>
+              <tfoot>
+                <tr className="bg-[#F3F1FA]">
+                  <td colSpan={3} className="px-4 py-2.5 text-right text-xs font-semibold text-[#374151]">Totaal</td>
+                  <td className="px-4 py-2.5 text-right font-bold text-[#374151]">
+                    {lockedResults.reduce((s, r) => s + calcRawPoints(r.result_type, r.position), 0)}
+                  </td>
+                  <td className="px-4 py-2.5 text-right font-bold text-[#9462A6]">
+                    {(lockedResults.reduce((s, r) => s + calcRawPoints(r.result_type, r.position), 0) / Math.sqrt(Math.max(pickCount, 1))).toFixed(2)}
+                  </td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </section>
@@ -223,9 +237,22 @@ export default async function RennerDetailPage({
 }
 
 const RESULT_LABELS: Record<string, string> = {
-  stage_finish: "🏁 Etappeuitslag",
-  gc_standing: "🟡 Algemeen klassement",
+  stage_finish:      "🏁 Etappeuitslag",
+  gc_standing:       "🟡 Algemeen klassement",
   mountain_standing: "🔴 Bergklassement",
-  sprint_standing: "🟢 Puntenklassement",
-  white_standing: "⚪ Jongerenklassement",
+  sprint_standing:   "🟢 Puntenklassement",
+  white_standing:    "⚪ Jongerenklassement",
 };
+
+const STAGE_FINISH_PTS = [0, 15, 10, 8, 7, 6, 5, 4, 3, 2, 1];
+const JERSEY_PTS: Record<string, number[]> = {
+  gc_standing:       [0, 5, 3, 1],
+  white_standing:    [0, 3, 2, 1],
+  mountain_standing: [0, 3, 2, 1],
+  sprint_standing:   [0, 3, 2, 1],
+};
+
+function calcRawPoints(resultType: string, position: number): number {
+  if (resultType === "stage_finish") return STAGE_FINISH_PTS[position] ?? 0;
+  return (JERSEY_PTS[resultType] ?? [])[position] ?? 0;
+}

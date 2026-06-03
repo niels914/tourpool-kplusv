@@ -66,13 +66,13 @@ export default async function MijnTeamPage() {
   );
 
   // Riders voor het form (enkel vóór deadline nodig)
-  let riders: Array<{ id: string; bib_number: number; bib_digit: number; full_name: string; team_name: string; nationality: string | null; is_dns: boolean }> = [];
+  let riders: Array<{ id: string; bib_number: number; bib_digit: number; full_name: string; team_name: string; nationality: string | null; is_dns: boolean; is_dnf: boolean }> = [];
   let currentPicks: Array<{ bib_slot: number; rider_id: string; riders: { id: string; full_name: string; team_name: string; bib_number: number; nationality: string | null } | null }> = [];
 
   if (isOpen) {
     const { data: allRiders } = await supabase
       .from("riders")
-      .select("id, bib_number, bib_digit, full_name, team_name, nationality, is_dns")
+      .select("id, bib_number, bib_digit, full_name, team_name, nationality, is_dns, is_dnf")
       .eq("is_dns", false)
       .order("bib_number", { ascending: true });
     riders = allRiders ?? [];

@@ -107,7 +107,10 @@ export function PuntenGrafiek({ data, profiles }: Props) {
           <YAxis tick={{ fontSize: 11, fill: "#9CA3AF" }} width={45} />
           <Tooltip
             contentStyle={{ borderRadius: 12, border: "1px solid #E2DFF0", fontSize: 12 }}
-            formatter={(value: number, uid: string) => [value.toFixed(2), getLabel(uid)]}
+            {...{
+              formatter: (value: number, uid: string) =>
+                [Number(value).toFixed(2), getLabel(uid)],
+            } as object}
           />
           {userIds.map((uid) =>
             active.has(uid) ? (

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const cache = new Map<string, Buffer | null>();
+const cache = new Map<string, ArrayBuffer | null>();
 
 export async function GET(
   _req: NextRequest,
@@ -25,7 +25,7 @@ export async function GET(
       },
     });
     if (!res.ok) { cache.set(slug, null); return new NextResponse(null, { status: 404 }); }
-    const buf = Buffer.from(await res.arrayBuffer());
+    const buf = await res.arrayBuffer();
     cache.set(slug, buf);
     return new NextResponse(buf, {
       headers: { "Content-Type": "image/png", "Cache-Control": "public, max-age=86400" },

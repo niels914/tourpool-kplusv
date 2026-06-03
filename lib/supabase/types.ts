@@ -19,6 +19,8 @@ export type Database = {
           email: string;
           is_admin: boolean;
           is_blocked: boolean;
+          avatar_id: number;
+          nickname: string | null;
           created_at: string;
         };
         Insert: {
@@ -27,6 +29,8 @@ export type Database = {
           email: string;
           is_admin?: boolean;
           is_blocked?: boolean;
+          avatar_id?: number;
+          nickname?: string | null;
           created_at?: string;
         };
         Update: {
@@ -35,6 +39,8 @@ export type Database = {
           email?: string;
           is_admin?: boolean;
           is_blocked?: boolean;
+          avatar_id?: number;
+          nickname?: string | null;
           created_at?: string;
         };
         Relationships: [];
@@ -238,6 +244,58 @@ export type Database = {
         };
         Relationships: [];
       };
+      posts: {
+        Row: {
+          id: string;
+          author_id: string;
+          title: string;
+          content: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          author_id: string;
+          title: string;
+          content: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          author_id?: string;
+          title?: string;
+          content?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      messages: {
+        Row: {
+          id: string;
+          user_id: string;
+          content: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          content: string;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          content?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "messages_user_id_fkey";
+            columns: ["user_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
       invitations: {
         Row: {
           id: string;
@@ -307,6 +365,14 @@ export type Database = {
           user_id: string;
           stage_number: number;
           cumulative_points: number;
+        };
+        Relationships: [];
+      };
+      stage_raw_points: {
+        Row: {
+          stage_id: string;
+          rider_id: string;
+          raw_points: number;
         };
         Relationships: [];
       };
