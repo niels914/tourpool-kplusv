@@ -3,12 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import { createClient } from "@/lib/supabase/client";
 
+import { getAvatar } from "@/lib/profiles";
+
 type Message = {
   id: string;
   user_id: string;
   content: string;
   created_at: string;
-  profiles: { display_name: string } | null;
+  profiles: { display_name: string; nickname?: string | null; avatar_id?: number | null } | null;
 };
 
 export function ChatClient({
@@ -115,11 +117,16 @@ export function ChatClient({
                   className={`flex items-end gap-2 ${isOwn ? "flex-row-reverse" : "flex-row"}`}
                 >
                   <div className={`max-w-[75%] ${isOwn ? "items-end" : "items-start"} flex flex-col gap-1`}>
-                    {!isOwn && (
-                      <span className="ml-1 text-xs font-medium text-[#5760A6]">
-                        {msg.profiles?.display_name ?? "…"}
-                      </span>
-                    )}
+                    {(() => {
+                      const p = msg.profiles;
+                      const avatar = getAvatar(p?.avatar_id);
+                      return (
+                        <span className={`flex items-center gap-1 text-xs font-medium ${isOwn ? "mr-1 justify-end text-[#9462A6]" : "ml-1 text-[#5760A6]"}`}>
+                          <span className="flex h-4 w-4 items-center justify-center rounded-full text-[9px]" style={{ backgroundColor: avatar.bg }}>{avatar.emoji}</span>
+                          {p?.nickname ? <>{p.nickname} <span className="font-normal text-[#9CA3AF]">aka {p.display_name}</span></> : (p?.display_name ?? "…")}
+                        </span>
+                      );
+                    })()}
                     <div
                       className={`group relative rounded-2xl px-4 py-2.5 text-sm ${
                         isOwn

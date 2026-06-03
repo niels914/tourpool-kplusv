@@ -1,5 +1,5 @@
-﻿import { createClient } from "@/lib/supabase/server";
-import Link from "next/link";
+import { createClient } from "@/lib/supabase/server";
+import { EtappeRow } from "./EtappeRow";
 
 export const revalidate = 300;
 
@@ -51,50 +51,22 @@ export default async function EtappesPage() {
                 const status = STATUS_LABELS[stage.status] ?? STATUS_LABELS.scheduled;
                 const isClickable = stage.status === "locked" || stage.status === "results_pending";
 
-                const Row = (
-                  <tr
+                return (
+                  <EtappeRow
                     key={stage.id}
-                    className={`border-b border-[#F3F4F6] ${isClickable ? "cursor-pointer hover:bg-[#F8F7FC]" : ""}`}
-                  >
-                    <td className="px-4 py-3 font-medium text-[#111827]">
-                      {stage.stage_number}
-                    </td>
-                    <td className="px-4 py-3 text-[#374151]">
-                      {new Date(stage.stage_date).toLocaleDateString("nl-NL", {
-                        day: "numeric",
-                        month: "short",
-                      })}
-                    </td>
-                    <td className="hidden px-4 py-3 text-[#374151] sm:table-cell">
-                      {stage.departure && stage.arrival
-                        ? `${stage.departure} → ${stage.arrival}`
-                        : "—"}
-                    </td>
-                    <td className="hidden px-4 py-3 md:table-cell">
-                      <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${
-                        stage.stage_type === "ttt"
-                          ? "bg-purple-100 text-purple-700"
-                          : "bg-gray-100 text-gray-600"
-                      }`}>
-                        {TYPE_LABELS[stage.stage_type] ?? stage.stage_type}
-                      </span>
-                    </td>
-                    <td className="hidden px-4 py-3 text-right text-[#6B7280] md:table-cell">
-                      {stage.distance_km ? `${stage.distance_km} km` : "—"}
-                    </td>
-                    <td className="px-4 py-3">
-                      <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${status.color}`}>
-                        {status.label}
-                      </span>
-                    </td>
-                  </tr>
+                    id={stage.id}
+                    isClickable={isClickable}
+                    stageNumber={stage.stage_number}
+                    stageDate={stage.stage_date}
+                    departure={stage.departure}
+                    arrival={stage.arrival}
+                    stageType={stage.stage_type}
+                    typeLabel={TYPE_LABELS[stage.stage_type] ?? stage.stage_type}
+                    distanceKm={stage.distance_km}
+                    statusLabel={status.label}
+                    statusColor={status.color}
+                  />
                 );
-
-                return isClickable ? (
-                  <Link key={stage.id} href={`/etappes/${stage.id}`} passHref legacyBehavior>
-                    {Row}
-                  </Link>
-                ) : Row;
               })}
             </tbody>
           </table>

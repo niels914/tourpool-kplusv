@@ -6,6 +6,12 @@ export const revalidate = 60;
 export default async function VerslagenPage() {
   const supabase = await createClient();
 
+  const { data: { user } } = await supabase.auth.getUser();
+  const { data: profile } = user
+    ? await supabase.from("profiles").select("is_admin").eq("id", user.id).single()
+    : { data: null };
+  const isAdmin = profile?.is_admin ?? false;
+
   const { data: posts } = await supabase
     .from("posts")
     .select("id, title, created_at, author_id")
@@ -25,9 +31,19 @@ export default async function VerslagenPage() {
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1A1A1A]">Verslagen</h1>
-        <p className="mt-1 text-[#6B7280]">Wedstrijdverslagen en updates van de redactie</p>
+      <div className="mb-8 flex items-start justify-between">
+        <div>
+          <h1 className="text-3xl font-bold text-[#1A1A1A]">Verslagen</h1>
+          <p className="mt-1 text-[#6B7280]">Wedstrijdverslagen en updates van de redactie</p>
+        </div>
+        {isAdmin && (
+          <Link
+            href="/admin/verslagen"
+            className="inline-flex items-center gap-1.5 rounded-xl bg-[#9462A6] px-4 py-2 text-sm font-semibold text-white hover:bg-[#5760A6] transition"
+          >
+            + Nieuw verslag
+          </Link>
+        )}
       </div>
 
       {!posts || posts.length === 0 ? (

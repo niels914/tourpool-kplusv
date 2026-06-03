@@ -1,5 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
+import { UserDisplay } from "@/components/UserDisplay";
+import { PuntenGrafiek } from "./PuntenGrafiek";
 
 export const revalidate = 60;
 
@@ -29,30 +31,45 @@ export default async function KlassementPage() {
   const lockedCount = lockedStages.length;
   const totalStages = stages?.length ?? 21;
 
-  // Feature 4: stijgers/dalers — vergelijk huidige rang met rang na vorige etappe
+  // Stijgers/dalers — vergelijk huidige rang met rang na vorige etappe met data
   type DeltaMap = Record<string, number | null>;
   let deltaMap: DeltaMap = {};
-  if (lockedCount >= 2) {
+  if (lockedCount >= 1) {
     const maxStage = Math.max(...lockedStages.map((s) => s.stage_number));
-    const prevStage = maxStage - 1;
-    const { data: prevPoints } = await supabase
-      .from("cumulative_points")
-      .select("user_id, cumulative_points")
-      .eq("stage_number", prevStage);
 
-    if (prevPoints && prevPoints.length > 0) {
-      // Rang berekenen op basis van vorige etappe
-      const sorted = [...prevPoints].sort(
-        (a, b) => Number(b.cumulative_points) - Number(a.cumulative_points)
-      );
-      const prevRankMap: Record<string, number> = {};
-      sorted.forEach((row, i) => {
-        prevRankMap[row.user_id] = i + 1;
-      });
+    // Zoek de laatste stage met data in de view (maxStage zelf voor huidig,
+    // de op-één-na-hoogste voor vergelijking — sla lege etappes over)
+    const { data: stageNums } = await supabase
+      .from("cumulative_points")
+      .select("stage_number")
+      .lt("stage_number", maxStage)
+      .order("stage_number", { ascending: false })
+      .limit(1);
+
+    const prevStageNum = stageNums?.[0]?.stage_number ?? null;
+
+    if (prevStageNum !== null) {
+      // Huidig en vorig klassement ophalen
+      const [{ data: currPoints }, { data: prevPoints }] = await Promise.all([
+        supabase.from("cumulative_points").select("user_id, cumulative_points").eq("stage_number", maxStage),
+        supabase.from("cumulative_points").select("user_id, cumulative_points").eq("stage_number", prevStageNum),
+      ]);
+
+      const rank = (pts: { user_id: string; cumulative_points: number }[]) => {
+        const sorted = [...pts].sort((a, b) => Number(b.cumulative_points) - Number(a.cumulative_points));
+        const map: Record<string, number> = {};
+        sorted.forEach((r, i) => { map[r.user_id] = i + 1; });
+        return map;
+      };
+
+      const currRankMap = rank(currPoints ?? []);
+      const prevRankMap = rank(prevPoints ?? []);
+
       for (const entry of klassement ?? []) {
+        const curr = currRankMap[entry.user_id];
         const prev = prevRankMap[entry.user_id];
-        if (prev !== undefined) {
-          deltaMap[entry.user_id] = prev - entry.rank; // positief = gestegen
+        if (curr !== undefined && prev !== undefined) {
+          deltaMap[entry.user_id] = prev - curr; // positief = gestegen
         } else {
           deltaMap[entry.user_id] = null;
         }
@@ -60,59 +77,27 @@ export default async function KlassementPage() {
     }
   }
 
-  // Feature 5: top 10 renners met meeste ruwe punten
-  type TopRider = {
-    rider_id: string;
-    full_name: string;
-    bib_number: number;
-    team_name: string;
-    total_raw: number;
-    pick_count: number;
-  };
-  let topRiders: TopRider[] = [];
+  // Profiles voor UserDisplay + grafiek labels
+  const { data: profiles } = await supabase
+    .from("profiles")
+    .select("id, display_name, nickname, avatar_id");
+  const profileMap: Record<string, { display_name: string; nickname: string | null; avatar_id: number | null }> = {};
+  for (const p of profiles ?? []) {
+    profileMap[p.id] = { display_name: p.display_name, nickname: p.nickname ?? null, avatar_id: p.avatar_id ?? null };
+  }
+
+  // Puntenverloop voor grafiek (alle vergrendelde etappes)
+  let grafiekData: { stage_number: number; user_id: string; cumulative_points: number }[] = [];
   if (lockedCount > 0) {
-    const { data: rawPoints } = await supabase
-      .from("stage_raw_points")
-      .select("rider_id, raw_points");
-
-    if (rawPoints && rawPoints.length > 0) {
-      const totals: Record<string, number> = {};
-      for (const row of rawPoints) {
-        totals[row.rider_id] = (totals[row.rider_id] ?? 0) + Number(row.raw_points);
-      }
-      const topIds = Object.entries(totals)
-        .sort((a, b) => b[1] - a[1])
-        .slice(0, 10)
-        .map(([id]) => id);
-
-      const { data: riderData } = await supabase
-        .from("riders")
-        .select("id, full_name, bib_number, team_name");
-
-      const { data: pickCounts } = await supabase
-        .from("rider_pick_counts")
-        .select("rider_id, pick_count");
-
-      const pickMap: Record<string, number> = {};
-      for (const p of pickCounts ?? []) {
-        pickMap[p.rider_id] = Number(p.pick_count);
-      }
-
-      topRiders = topIds
-        .map((id) => {
-          const r = riderData?.find((x) => x.id === id);
-          if (!r) return null;
-          return {
-            rider_id: id,
-            full_name: r.full_name,
-            bib_number: r.bib_number,
-            team_name: r.team_name,
-            total_raw: totals[id],
-            pick_count: pickMap[id] ?? 0,
-          };
-        })
-        .filter(Boolean) as TopRider[];
-    }
+    const { data: cumulPoints } = await supabase
+      .from("cumulative_points")
+      .select("user_id, stage_number, cumulative_points")
+      .order("stage_number", { ascending: true });
+    grafiekData = (cumulPoints ?? []).map((r) => ({
+      stage_number: r.stage_number,
+      user_id: r.user_id,
+      cumulative_points: Number(r.cumulative_points),
+    }));
   }
 
   return (
@@ -155,7 +140,7 @@ export default async function KlassementPage() {
                 <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-[#6B7280]">
                   Punten
                 </th>
-                {lockedCount >= 2 && (
+                {lockedCount >= 1 && (
                   <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-[#6B7280]">
                     Trend
                   </th>
@@ -183,16 +168,11 @@ export default async function KlassementPage() {
                     </td>
                     <td className="px-4 py-3">
                       {registrationClosed ? (
-                        <Link
-                          href={`/deelnemers/${entry.user_id}`}
-                          className="font-medium text-[#111827] hover:text-[#9462A6] hover:underline"
-                        >
-                          {entry.display_name}
+                        <Link href={`/deelnemers/${entry.user_id}`} className="hover:opacity-80">
+                          <UserDisplay profile={profileMap[entry.user_id] ?? { display_name: entry.display_name }} size="sm" />
                         </Link>
                       ) : (
-                        <span className="font-medium text-[#111827]">
-                          {entry.display_name}
-                        </span>
+                        <UserDisplay profile={profileMap[entry.user_id] ?? { display_name: entry.display_name }} size="sm" />
                       )}
                     </td>
                     <td className="px-4 py-3 text-right">
@@ -200,7 +180,7 @@ export default async function KlassementPage() {
                         {Number(entry.total_points).toFixed(2)}
                       </span>
                     </td>
-                    {lockedCount >= 2 && (
+                    {lockedCount >= 1 && (
                       <td className="px-4 py-3 text-right">
                         <DeltaBadge delta={delta} />
                       </td>
@@ -219,53 +199,16 @@ export default async function KlassementPage() {
         </div>
       )}
 
-      {topRiders.length > 0 && (
-        <div className="mt-8">
-          <h2 className="mb-3 text-lg font-semibold text-[#111827]">Top 10 renners</h2>
-          <div className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm">
-            <table className="w-full">
-              <thead>
-                <tr className="border-b border-[#E2DFF0] bg-[#F3F1FA]">
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">#</th>
-                  <th className="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Renner</th>
-                  <th className="hidden px-4 py-3 text-left text-xs font-semibold uppercase tracking-wide text-[#6B7280] sm:table-cell">Ploeg</th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Punten</th>
-                  <th className="px-4 py-3 text-right text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Gekozen</th>
-                </tr>
-              </thead>
-              <tbody>
-                {topRiders.map((rider, i) => (
-                  <tr key={rider.rider_id} className="border-b border-[#F3F4F6] transition hover:bg-[#F8F7FC]">
-                    <td className="px-4 py-3 text-sm text-[#6B7280]">{i + 1}</td>
-                    <td className="px-4 py-3">
-                      <div className="flex items-center gap-2">
-                        <span className="inline-flex h-6 w-8 items-center justify-center rounded bg-[#5760A6] text-xs font-bold text-white">
-                          {rider.bib_number}
-                        </span>
-                        <Link
-                          href={`/renners/${rider.rider_id}`}
-                          className="font-medium text-[#111827] hover:text-[#9462A6] hover:underline"
-                        >
-                          {rider.full_name}
-                        </Link>
-                      </div>
-                    </td>
-                    <td className="hidden px-4 py-3 text-sm text-[#6B7280] sm:table-cell">
-                      {rider.team_name}
-                    </td>
-                    <td className="px-4 py-3 text-right font-semibold text-[#111827]">
-                      {rider.total_raw.toFixed(0)}
-                    </td>
-                    <td className="px-4 py-3 text-right text-sm text-[#6B7280]">
-                      {rider.pick_count}×
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <p className="mt-2 text-xs text-[#6B7280]">Ruwe punten vóór wortelweging — renners met veel picks leveren individueel minder op.</p>
-        </div>
+      {grafiekData.length > 0 && (
+        <PuntenGrafiek
+          data={grafiekData}
+          profiles={(profiles ?? []).map((p) => ({
+            user_id: p.id,
+            display_name: p.display_name,
+            nickname: p.nickname ?? null,
+            avatar_id: p.avatar_id ?? null,
+          }))}
+        />
       )}
 
       <p className="mt-4 text-xs text-[#6B7280]">
@@ -287,20 +230,21 @@ function RankBadge({ rank }: { rank: number }) {
 }
 
 function DeltaBadge({ delta }: { delta: number | null | undefined }) {
-  if (delta === null || delta === undefined) return <span className="text-[#9CA3AF]">—</span>;
+  if (delta === null || delta === undefined)
+    return <span className="text-sm text-[#D1D5DB]">—</span>;
   if (delta > 0)
     return (
-      <span className="inline-flex items-center gap-0.5 text-sm font-semibold text-green-600">
-        ▲ {delta}
+      <span className="inline-flex items-center gap-0.5 rounded-full bg-green-50 px-2 py-0.5 text-xs font-bold text-green-600">
+        ↑ {delta}
       </span>
     );
   if (delta < 0)
     return (
-      <span className="inline-flex items-center gap-0.5 text-sm font-semibold text-red-500">
-        ▼ {Math.abs(delta)}
+      <span className="inline-flex items-center gap-0.5 rounded-full bg-red-50 px-2 py-0.5 text-xs font-bold text-red-500">
+        ↓ {Math.abs(delta)}
       </span>
     );
-  return <span className="text-sm text-[#9CA3AF]">—</span>;
+  return <span className="text-sm text-[#D1D5DB]">—</span>;
 }
 
 function EmptyState() {

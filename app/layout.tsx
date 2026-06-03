@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
+import { BottomNavWrapper } from "@/components/BottomNavWrapper";
 
 export const metadata: Metadata = {
   title: "KplusV Tourpool 2026",
@@ -25,7 +26,8 @@ export default function RootLayout({
       <body>
         <div className="tdf-stripe" />
         <Navbar />
-        <main className="min-h-screen">{children}</main>
+        <main className="min-h-screen pb-20">{children}</main>
+        <BottomNavWrapper />
       </body>
     </html>
   );

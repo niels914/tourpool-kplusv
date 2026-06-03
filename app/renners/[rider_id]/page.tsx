@@ -85,7 +85,7 @@ export default async function RennerDetailPage({
             {rider.nationality && ` · ${rider.nationality}`}
             {" · "}slot …{rider.bib_digit}
           </p>
-          <div className="mt-2 flex gap-2">
+          <div className="mt-2 flex flex-wrap gap-2">
             {rider.is_dns && (
               <span className="rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-semibold text-red-700">
                 DNS — niet gestart
@@ -95,6 +95,16 @@ export default async function RennerDetailPage({
               <span className="rounded-full bg-orange-100 px-2.5 py-0.5 text-xs font-semibold text-orange-700">
                 DNF — uitgevallen
               </span>
+            )}
+            {rider.pcs_slug && (
+              <a
+                href={`https://www.procyclingstats.com/rider/${rider.pcs_slug}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1 rounded-full bg-[#EDE8F5] px-2.5 py-0.5 text-xs font-semibold text-[#5760A6] hover:bg-[#D8D3EC] transition"
+              >
+                ProCyclingStats ↗
+              </a>
             )}
           </div>
         </div>

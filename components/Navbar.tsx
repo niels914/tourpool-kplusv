@@ -100,24 +100,12 @@ export function Navbar() {
         {/* Rechts: ploeg samenstellen + uitloggen */}
         <div className="flex items-center gap-2">
           {loggedIn && (
-            <>
-              <Link
-                href="/registratie"
-                className={`hidden rounded-lg border px-3 py-1.5 text-sm font-medium transition sm:block ${
-                  pathname === "/registratie"
-                    ? "border-white bg-white text-[#5760A6]"
-                    : "border-white/30 text-white/80 hover:border-white hover:text-white"
-                }`}
-              >
-                Mijn ploeg samenstellen
-              </Link>
-              <button
-                onClick={handleSignOut}
-                className="rounded-lg px-3 py-1.5 text-sm text-white/60 hover:text-white"
-              >
-                Uitloggen
-              </button>
-            </>
+            <button
+              onClick={handleSignOut}
+              className="rounded-lg px-3 py-1.5 text-sm text-white/60 hover:text-white"
+            >
+              Uitloggen
+            </button>
           )}
 
           {/* Hamburger */}

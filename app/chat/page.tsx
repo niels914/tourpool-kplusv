@@ -12,7 +12,7 @@ export default async function ChatPage() {
 
   const { data: messages } = await supabase
     .from("messages")
-    .select("id, user_id, content, created_at, profiles(display_name)")
+    .select("id, user_id, content, created_at, profiles(display_name, nickname, avatar_id)")
     .order("created_at", { ascending: true })
     .limit(100);
 
