@@ -52,7 +52,7 @@ export default async function DeelnemerPage({
   // Picks van de bekeken deelnemer
   const { data: rawPicks } = await supabase
     .from("rider_score_detail")
-    .select("*")
+    .select("bib_slot, rider_id, rider_name, bib_number, team_name, pick_count, weighted_stage_points, weighted_bonus_points")
     .eq("user_id", user_id)
     .order("bib_slot", { ascending: true });
 
@@ -69,7 +69,7 @@ export default async function DeelnemerPage({
   if (!isOwnTeam) {
     const { data: rawOwn } = await supabase
       .from("rider_score_detail")
-      .select("*")
+      .select("bib_slot, rider_id, rider_name, bib_number, team_name, pick_count, weighted_stage_points, weighted_bonus_points")
       .eq("user_id", user.id)
       .order("bib_slot", { ascending: true });
     ownPicks = (rawOwn ?? []) as Pick[];
@@ -91,13 +91,13 @@ export default async function DeelnemerPage({
         </Link>
 
         <div className="mb-8 flex items-start justify-between">
-          <h1 className="text-3xl font-bold text-[#1A1A1A]">Mijn ploeg</h1>
+          <h1 className="text-3xl font-bold text-[#111827]">Mijn ploeg</h1>
           {picks.length > 0 && (
-            <div className="rounded-xl bg-[#1A1A1A] px-5 py-3 text-center">
-              <div className="text-2xl font-bold text-[#FFD700]">
+            <div className="rounded-xl bg-[#9462A6] px-5 py-3 text-center">
+              <div className="text-2xl font-bold text-white">
                 {totalPoints.toFixed(2)}
               </div>
-              <div className="text-xs text-white/60">punten totaal</div>
+              <div className="text-xs text-white/70">punten totaal</div>
             </div>
           )}
         </div>
@@ -108,7 +108,7 @@ export default async function DeelnemerPage({
             <p className="text-[#6B7280]">Je hebt nog geen ploeg samengesteld.</p>
             <Link
               href="/registratie"
-              className="mt-4 inline-block rounded-xl bg-[#1A1A1A] px-6 py-2.5 text-sm font-semibold text-[#FFD700] hover:bg-[#333]"
+              className="mt-4 inline-block rounded-xl bg-[#9462A6] px-6 py-2.5 text-sm font-semibold text-white hover:bg-[#5760A6]"
             >
               Ploeg samenstellen →
             </Link>
@@ -196,19 +196,19 @@ export default async function DeelnemerPage({
 
       {/* Scorebalk */}
       <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <h1 className="text-2xl font-bold text-[#1A1A1A]">
+        <h1 className="text-2xl font-bold text-[#111827]">
           Vergelijking
         </h1>
         <div className="flex gap-3">
           <div className="flex-1 rounded-xl border border-[#E2DFF0] bg-white px-4 py-3 text-center sm:min-w-[140px]">
-            <div className={`text-xl font-bold ${ownTotal > totalPoints ? "text-[#9462A6]" : "text-[#1A1A1A]"}`}>
+            <div className={`text-xl font-bold ${ownTotal > totalPoints ? "text-[#9462A6]" : "text-[#111827]"}`}>
               {ownTotal.toFixed(2)}
             </div>
             <div className="truncate text-xs text-[#6B7280]">{ownName}</div>
           </div>
           <div className="flex items-center text-sm font-semibold text-[#6B7280]">vs</div>
           <div className="flex-1 rounded-xl border border-[#E2DFF0] bg-white px-4 py-3 text-center sm:min-w-[140px]">
-            <div className={`text-xl font-bold ${totalPoints > ownTotal ? "text-[#9462A6]" : "text-[#1A1A1A]"}`}>
+            <div className={`text-xl font-bold ${totalPoints > ownTotal ? "text-[#9462A6]" : "text-[#111827]"}`}>
               {totalPoints.toFixed(2)}
             </div>
             <div className="truncate text-xs text-[#6B7280]">{profile.display_name}</div>

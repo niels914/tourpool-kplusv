@@ -19,7 +19,7 @@ export default async function ChatPage() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-10">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-[#1A1A1A]">Chat</h1>
+        <h1 className="text-3xl font-bold text-[#111827]">Chat</h1>
         <p className="mt-1 text-[#6B7280]">Praat met de andere pooldeelnemers</p>
       </div>
       <ChatClient

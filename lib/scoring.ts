@@ -27,6 +27,12 @@ export const JERSEY_LABELS: Record<string, string> = {
   final_white:       "Jongerenklassement",
 };
 
+export const TTT_TEAM_POINTS: number[] = [0, 5, 3, 2, 1, 0.5];
+
+export function tttTeamPoints(position: number): number {
+  return TTT_TEAM_POINTS[position] ?? 0;
+}
+
 export function stageFinishPoints(position: number): number {
   return STAGE_FINISH_POINTS[position] ?? 0;
 }

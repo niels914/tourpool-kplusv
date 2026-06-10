@@ -111,7 +111,7 @@ export default async function RennersPage() {
   return (
     <div className="mx-auto max-w-5xl px-4 py-10">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-[#1A1A1A]">Renners</h1>
+        <h1 className="text-3xl font-bold text-[#111827]">Renners</h1>
         <p className="mt-1 text-[#6B7280]">
           {riders?.length ?? 0} renners in de Tour de France 2026
           {showPicks && " — klik op een renner om te zien wie hem gekozen heeft"}

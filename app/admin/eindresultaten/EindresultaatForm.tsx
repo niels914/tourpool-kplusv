@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -127,7 +127,7 @@ export function EindresultaatForm({
         <button
           onClick={handleSave}
           disabled={!allFilled || saving}
-          className="rounded-lg bg-[#1A1A1A] px-4 py-2 text-sm font-semibold text-[#FFD700] hover:bg-[#333] disabled:opacity-40"
+          className="rounded-lg bg-[#9462A6] px-4 py-2 text-sm font-semibold text-white hover:bg-[#5760A6] disabled:opacity-40"
         >
           {saving ? "Opslaan…" : "Opslaan"}
         </button>

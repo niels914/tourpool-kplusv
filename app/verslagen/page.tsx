@@ -33,7 +33,7 @@ export default async function VerslagenPage() {
     <div className="mx-auto max-w-3xl px-4 py-10">
       <div className="mb-8 flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#1A1A1A]">Verslagen</h1>
+          <h1 className="text-3xl font-bold text-[#111827]">Verslagen</h1>
           <p className="mt-1 text-[#6B7280]">Wedstrijdverslagen en updates van de redactie</p>
         </div>
         {isAdmin && (

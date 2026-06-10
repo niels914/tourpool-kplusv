@@ -137,10 +137,25 @@ export default async function HomePage() {
     topStageRiders = topStageRiders.slice(0, 3);
   }
 
+  // Dagprijs: wie scoorde het meest in de vorige etappe?
+  let dagprijsWinner: { user_id: string; points: number } | null = null;
+  if (lastStage) {
+    const { data: stagePoints } = await supabase
+      .from("user_stage_points")
+      .select("user_id, weighted_points")
+      .eq("stage_id", lastStage.id)
+      .order("weighted_points", { ascending: false })
+      .limit(1)
+      .single();
+    if (stagePoints) {
+      dagprijsWinner = { user_id: stagePoints.user_id, points: Number(stagePoints.weighted_points) };
+    }
+  }
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#1A1A1A]">Dashboard</h1>
+        <h1 className="text-2xl font-bold text-[#111827]">Dashboard</h1>
         {profile && <div className="mt-1"><UserDisplay profile={profile} size="md" /></div>}
       </div>
 
@@ -156,9 +171,10 @@ export default async function HomePage() {
                 const isMe = e.user_id === user.id;
                 const delta = deltaMap[e.user_id];
                 const p = profileMap[e.user_id] ?? { display_name: e.display_name, nickname: null, avatar_id: null };
+                const isLanterneRouge = Number(e.rank) === klassement.length && klassement.length > 3;
                 return (
-                  <div key={e.user_id} className={`flex items-center gap-1.5 rounded-lg px-2 py-1 ${isMe ? "bg-[#EDE8F5]" : ""}`}>
-                    <span className="w-4 shrink-0 text-center text-xs font-bold text-[#6B7280]">{e.rank}</span>
+                  <div key={e.user_id} className={`flex items-center gap-1.5 rounded-lg px-2 py-1 ${isMe ? "bg-[#EDE8F5]" : isLanterneRouge ? "bg-red-50" : ""}`}>
+                    <span className={`w-4 shrink-0 text-center text-xs font-bold ${isLanterneRouge ? "text-red-500" : "text-[#6B7280]"}`}>{isLanterneRouge ? "🔴" : e.rank}</span>
                     <MiniDelta delta={delta} />
                     <div className="flex-1 min-w-0 overflow-hidden">
                       <UserDisplay profile={p} size="sm" compact />
@@ -216,6 +232,19 @@ export default async function HomePage() {
                 </div>
               ) : (
                 <p className="text-xs text-[#9CA3AF] mt-1">Geen punten gescoord</p>
+              )}
+              {/* Dagprijs */}
+              {dagprijsWinner && profileMap[dagprijsWinner.user_id] && (
+                <div className="mt-3 flex items-center gap-2 rounded-lg bg-[#FEF9C3] px-3 py-2">
+                  <span className="text-base">🏆</span>
+                  <div className="flex-1 min-w-0">
+                    <span className="text-xs font-semibold text-[#92400E]">Dagprijs</span>
+                    <span className="ml-1.5 text-xs text-[#78350F]">
+                      {profileMap[dagprijsWinner.user_id]?.nickname ?? profileMap[dagprijsWinner.user_id]?.display_name}
+                    </span>
+                  </div>
+                  <span className="text-xs font-bold text-[#92400E]">{dagprijsWinner.points.toFixed(2)}</span>
+                </div>
               )}
             </div>
           )}

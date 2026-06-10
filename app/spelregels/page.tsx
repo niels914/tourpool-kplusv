@@ -1,9 +1,9 @@
-import { STAGE_FINISH_POINTS, JERSEY_POINTS, FINAL_BONUS_POINTS } from "@/lib/scoring";
+import { STAGE_FINISH_POINTS, JERSEY_POINTS, FINAL_BONUS_POINTS, TTT_TEAM_POINTS } from "@/lib/scoring";
 
 export default function SpelregelsPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
-      <h1 className="mb-1 text-3xl font-bold text-[#1A1A1A]">Spelregels</h1>
+      <h1 className="mb-1 text-3xl font-bold text-[#111827]">Spelregels</h1>
       <p className="mb-8 text-[#6B7280]">KplusV Tourpool 2026 — Tour de France, 27 juni t/m 20 juli 2026</p>
 
       {/* Inleiding */}
@@ -23,7 +23,7 @@ export default function SpelregelsPage() {
         <div className="mb-4 grid grid-cols-4 gap-2 sm:grid-cols-8">
           {[1,2,3,4,5,6,7,8].map((d) => (
             <div key={d} className="rounded-lg border border-[#E2DFF0] bg-white p-2 text-center">
-              <div className="text-lg font-bold text-white" style={{ WebkitTextStroke: "1px #1A1A1A" }}>…{d}</div>
+              <div className="text-lg font-bold text-[#5760A6]">…{d}</div>
               <div className="text-xs text-[#6B7280]">slot {d}</div>
             </div>
           ))}
@@ -43,8 +43,8 @@ export default function SpelregelsPage() {
       {/* Dagelijkse punten */}
       <Section title="Punten per etappe">
         <p className="mb-4">
-          Voor elke vergrendelde etappe (TTT-etappes tellen niet mee) verdienen jouw renners
-          punten in vijf categorieën:
+          Voor elke vergrendelde etappe verdienen jouw renners punten in vijf categorieën
+          (voor TTT-etappes geldt een apart puntensysteem — zie hieronder):
         </p>
 
         <h3 className="mb-2 font-semibold text-[#111827]">Etappeuitslag (top 10)</h3>
@@ -126,13 +126,55 @@ export default function SpelregelsPage() {
         </p>
       </Section>
 
+      {/* TTT scoring */}
+      <Section title="Ploegentijdrit (TTT)">
+        <p className="mb-4">
+          Bij de ploegentijdrit scoren de <strong>top 5 ploegen</strong> punten voor al hun renners.
+          Elke renner in jouw team die bij een top-5 ploeg rijdt, ontvangt de bijbehorende punten
+          — gewogen via de wortelregel.
+        </p>
+        <PointsTable
+          headers={["Ploegspositie", "Punten/renner"]}
+          rows={TTT_TEAM_POINTS.slice(1).map((pts, i) => [`${i + 1}e`, pts.toString()])}
+        />
+        <p className="mt-3 text-sm text-[#6B7280]">
+          Heb je twee renners van dezelfde ploeg? Dan scoren ze allebei.
+        </p>
+      </Section>
+
+      {/* Joker-etappe */}
+      <Section title="Joker-etappe 🃏">
+        <p className="mb-3">
+          Vóór de deadline kies je <strong>1 etappe</strong> als joker. Op die etappe worden jouw
+          punten vermenigvuldigd met <strong>×1.5</strong>.
+        </p>
+        <ul className="list-inside list-disc space-y-1 text-sm mb-3">
+          <li>Je kiest je joker tegelijk met je ploeg, vóór de registratiedeadline.</li>
+          <li>TTT-etappes zijn uitgesloten als jokerkeuze.</li>
+          <li>Je joker is <strong>geheim</strong> — niemand ziet jouw keuze tijdens de Tour.</li>
+          <li>De jokerbonus wordt pas aan het <strong>einde van de Tour</strong> onthuld en opgeteld bij je eindscore, net als de eindklassementbonussen.</li>
+        </ul>
+        <div className="rounded-xl bg-[#EDE8F5] p-5 text-sm">
+          <p className="mb-2 font-semibold">Voorbeeld:</p>
+          <p>
+            Je kiest etappe 13 (berg, Courchevel) als joker en scoort daar 12,50 punten.
+            Jokerbonus: 12,50 × 0,5 = <strong>+6,25 extra punten</strong> aan het einde van de Tour.
+          </p>
+        </div>
+      </Section>
+
+      {/* Dagprijs */}
+      <Section title="Dagprijs 🏆">
+        <p>
+          De deelnemer die in een etappe de <strong>meeste gewogen punten</strong> scoort, wint de
+          dagprijs. Dit is een virtuele trofee — geen invloed op het eindklassement, puur voor de
+          eer en de trash talk.
+        </p>
+      </Section>
+
       {/* Overige regels */}
       <Section title="Overige regels">
         <ul className="list-inside list-disc space-y-2 text-sm">
-          <li>
-            <strong>TTT (ploegentijdrit)</strong> telt niet mee voor de punten — wel weergegeven
-            in het schema.
-          </li>
           <li>
             Als een renner uitvalt (<strong>DNF</strong>) of niet start (<strong>DNS</strong>),
             verdient hij geen punten meer. Punten die al zijn verdiend blijven staan.
@@ -160,7 +202,7 @@ export default function SpelregelsPage() {
 function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section className="mb-8">
-      <h2 className="mb-3 border-l-4 border-[#9462A6] pl-3 text-xl font-bold text-[#1A1A1A]">
+      <h2 className="mb-3 border-l-4 border-[#9462A6] pl-3 text-xl font-bold text-[#111827]">
         {title}
       </h2>
       <div className="text-[#374151] leading-relaxed">{children}</div>

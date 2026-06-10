@@ -1,4 +1,4 @@
-﻿import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { BlockButton } from "./BlockButton";
 
 export default async function AdminDeelnemersPage() {
@@ -21,7 +21,7 @@ export default async function AdminDeelnemersPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-[#1A1A1A]">Deelnemers</h1>
+      <h1 className="mb-6 text-2xl font-bold text-[#111827]">Deelnemers</h1>
 
       <div className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm">
         <table className="w-full text-sm">
@@ -43,7 +43,7 @@ export default async function AdminDeelnemersPage() {
                   <td className="px-4 py-3 font-medium text-[#111827]">{profile.display_name}</td>
                   <td className="hidden px-4 py-3 text-[#6B7280] sm:table-cell">{profile.email}</td>
                   <td className="px-4 py-3 text-center">
-                    <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${picks === 8 ? "bg-[#EDE8F5] text-[#5760A6]" : picks > 0 ? "bg-yellow-100 text-yellow-700" : "bg-gray-100 text-gray-500"}`}>
+                    <span className={`rounded-full px-2 py-0.5 text-xs font-medium ${picks === 8 ? "bg-[#EDE8F5] text-[#5760A6]" : picks > 0 ? "bg-[#F3F1FA] text-[#9462A6]" : "bg-gray-100 text-gray-500"}`}>
                       {picks}/8
                     </span>
                   </td>

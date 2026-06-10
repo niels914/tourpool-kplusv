@@ -57,7 +57,7 @@ export default function LoginPage() {
           <div className="mb-4 inline-flex h-16 w-16 items-center justify-center overflow-hidden rounded-2xl">
             <Image src="/kplusv-logo.jpg" alt="KplusV" width={64} height={64} className="rounded-2xl" />
           </div>
-          <h1 className="text-3xl font-bold text-[#1A1A1A]">KplusV Tourpool</h1>
+          <h1 className="text-3xl font-bold text-[#111827]">KplusV Tourpool</h1>
           <p className="mt-1 text-[#6B7280]">Tour de France 2026</p>
         </div>
 

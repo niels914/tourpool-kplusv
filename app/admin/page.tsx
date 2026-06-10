@@ -1,4 +1,4 @@
-﻿import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
 
 export default async function AdminDashboard() {
@@ -25,7 +25,7 @@ export default async function AdminDashboard() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-[#1A1A1A]">Dashboard</h1>
+      <h1 className="mb-6 text-2xl font-bold text-[#111827]">Dashboard</h1>
 
       {/* Stats */}
       <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
@@ -63,7 +63,7 @@ export default async function AdminDashboard() {
 
       {/* Acties */}
       {pendingStages.length > 0 && (
-        <div className="mb-6 rounded-xl border border-[#FFD700] bg-[#EDE8F5] p-5">
+        <div className="mb-6 rounded-xl border border-[#9462A6] bg-[#EDE8F5] p-5">
           <h2 className="mb-2 font-semibold text-[#5760A6]">
             Actie vereist — {pendingStages.length} etappe{pendingStages.length > 1 ? "s" : ""} wacht op vergrendeling
           </h2>
@@ -72,7 +72,7 @@ export default async function AdminDashboard() {
               <Link
                 key={s.stage_number}
                 href={`/admin/etappes?stage=${s.stage_number}`}
-                className="rounded-lg bg-[#5760A6] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#78350F]"
+                className="rounded-lg bg-[#5760A6] px-3 py-1.5 text-sm font-medium text-white hover:bg-[#9462A6]"
               >
                 Etappe {s.stage_number} bekijken →
               </Link>
@@ -104,7 +104,7 @@ export default async function AdminDashboard() {
 
 function StatCard({ label, value, highlight }: { label: string; value: number; highlight?: boolean }) {
   return (
-    <div className={`rounded-xl border p-4 ${highlight ? "border-[#FFD700] bg-[#EDE8F5]" : "border-[#E2DFF0] bg-white"}`}>
+    <div className={`rounded-xl border p-4 ${highlight ? "border-[#9462A6] bg-[#EDE8F5]" : "border-[#E2DFF0] bg-white"}`}>
       <div className="text-2xl font-bold text-[#111827]">{value}</div>
       <div className="text-xs text-[#6B7280]">{label}</div>
     </div>

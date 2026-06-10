@@ -7,11 +7,6 @@
   --color-kpv-dark-violet:  #5760A6;
   --color-kpv-blue:         #007DB5;
 
-  /* Tour de France accenten (behoud) */
-  --color-tdf-yellow:       #FFD700;
-  --color-tdf-yellow-light: #FFF3B0;
-  --color-tdf-black:        #1A1A1A;
-
   /* Pagina-oppervlak */
   --color-surface: #F8F7FC;
   --color-border:  #E2DFF0;
@@ -24,10 +19,6 @@
   --color-jersey-polka:  #CC0000;
   --color-jersey-white:  #E8E8E8;
 
-  /* Podiumkleuren */
-  --color-gold:   #FFD700;
-  --color-silver: #C0C0C0;
-  --color-bronze: #CD7F32;
 }
 
 body {
@@ -37,7 +28,7 @@ body {
 }
 
 /* KplusV accentbalk — diagonale merkstreep */
-.tdf-stripe {
+.kpv-stripe {
   height: 4px;
   background: linear-gradient(
     90deg,

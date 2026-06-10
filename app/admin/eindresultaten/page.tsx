@@ -1,4 +1,4 @@
-﻿import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { EindresultaatForm } from "./EindresultaatForm";
 
 const CLASSIFICATIONS = [
@@ -58,7 +58,7 @@ export default async function AdminEindresultatenPage() {
   return (
     <div>
       <div className="mb-6">
-        <h1 className="text-2xl font-bold text-[#1A1A1A]">Eindresultaten</h1>
+        <h1 className="text-2xl font-bold text-[#111827]">Eindresultaten</h1>
         <p className="mt-1 text-sm text-[#6B7280]">
           Voer de eindstanden in na afloop van de Tour. De bonuspunten worden
           automatisch berekend.

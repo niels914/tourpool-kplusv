@@ -1,19 +1,20 @@
-﻿import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { StageRow } from "./StageRow";
 import { SeedStagesButton } from "./SeedStagesButton";
+import { TttResultForm } from "./TttResultForm";
 
 export default async function AdminEtappesPage() {
   const supabase = await createClient();
 
   const { data: stages } = await supabase
     .from("stages")
-    .select("*")
+    .select("id, stage_number, stage_date, stage_type, departure, arrival, distance_km, status, pcs_stage_url")
     .order("stage_number", { ascending: true });
 
   return (
     <div>
       <div className="mb-6 flex items-start justify-between">
-        <h1 className="text-2xl font-bold text-[#1A1A1A]">Etappes</h1>
+        <h1 className="text-2xl font-bold text-[#111827]">Etappes</h1>
         <div className="flex gap-2">
           <SeedStagesButton />
         </div>
@@ -44,6 +45,13 @@ export default async function AdminEtappesPage() {
           </table>
         </div>
       )}
+
+      {/* TTT invoerformulieren */}
+      {stages?.filter((s) => s.stage_type === "ttt" && s.status !== "locked").map((tttStage) => (
+        <div key={tttStage.id} className="mt-6">
+          <TttResultForm stageId={tttStage.id} stageNumber={tttStage.stage_number} />
+        </div>
+      ))}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-﻿import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { SyncStartlistButton } from "./SyncStartlistButton";
 import { RiderEditRow } from "./RiderEditRow";
 
@@ -7,7 +7,7 @@ export default async function AdminRennersPage() {
 
   const { data: riders } = await supabase
     .from("riders")
-    .select("*")
+    .select("id, bib_number, bib_digit, full_name, team_name, nationality, pcs_slug, is_dns, is_dnf")
     .order("bib_number", { ascending: true });
 
   // Check dekking per slot
@@ -21,12 +21,12 @@ export default async function AdminRennersPage() {
   return (
     <div>
       <div className="mb-6 flex items-start justify-between">
-        <h1 className="text-2xl font-bold text-[#1A1A1A]">Renners / Startlijst</h1>
+        <h1 className="text-2xl font-bold text-[#111827]">Renners / Startlijst</h1>
         <SyncStartlistButton />
       </div>
 
       {missingSlots.length > 0 && (
-        <div className="mb-4 rounded-xl border border-[#FFD700] bg-[#EDE8F5] px-4 py-3 text-sm text-[#5760A6]">
+        <div className="mb-4 rounded-xl border border-[#9462A6] bg-[#EDE8F5] px-4 py-3 text-sm text-[#5760A6]">
           ⚠ Geen renners voor slot(s): {missingSlots.map((s) => `…${s}`).join(", ")}
         </div>
       )}

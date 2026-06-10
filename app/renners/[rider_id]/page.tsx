@@ -28,7 +28,7 @@ export default async function RennerDetailPage({
   // Rennergegevens
   const { data: rider } = await supabase
     .from("riders")
-    .select("*")
+    .select("id, bib_number, bib_digit, full_name, team_name, nationality, pcs_slug, is_dns, is_dnf")
     .eq("id", rider_id)
     .single();
 
@@ -84,12 +84,12 @@ export default async function RennerDetailPage({
       {/* Renner header */}
       <div className="mb-8 flex items-start gap-4">
         <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-[#5760A6]">
-          <span className="text-lg font-bold text-[#FFD700]">
+          <span className="text-lg font-bold text-white">
             {rider.bib_number}
           </span>
         </div>
         <div>
-          <h1 className="text-3xl font-bold text-[#1A1A1A]">
+          <h1 className="text-3xl font-bold text-[#111827]">
             {rider.full_name}
           </h1>
           <p className="mt-1 text-[#6B7280]">
@@ -124,7 +124,7 @@ export default async function RennerDetailPage({
 
       {/* Wie koos deze renner */}
       <section className="mb-8">
-        <h2 className="mb-3 border-l-4 border-[#9462A6] pl-3 text-xl font-bold text-[#1A1A1A]">
+        <h2 className="mb-3 border-l-4 border-[#9462A6] pl-3 text-xl font-bold text-[#111827]">
           Gekozen door
         </h2>
 
@@ -187,7 +187,7 @@ export default async function RennerDetailPage({
       {/* Etapperesultaten */}
       {lockedResults.length > 0 && (
         <section>
-          <h2 className="mb-3 border-l-4 border-[#9462A6] pl-3 text-xl font-bold text-[#1A1A1A]">
+          <h2 className="mb-3 border-l-4 border-[#9462A6] pl-3 text-xl font-bold text-[#111827]">
             Resultaten
           </h2>
           <div className="overflow-hidden rounded-2xl border border-[#E2DFF0] bg-white shadow-sm">

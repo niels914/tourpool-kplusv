@@ -1,4 +1,4 @@
-﻿import { createClient } from "@/lib/supabase/server";
+import { createClient } from "@/lib/supabase/server";
 import { UitnodigingForm } from "./UitnodigingForm";
 import { CopyButton } from "./CopyButton";
 
@@ -16,7 +16,7 @@ export default async function AdminUitnodigingenPage() {
 
   return (
     <div>
-      <h1 className="mb-6 text-2xl font-bold text-[#1A1A1A]">Uitnodigingen</h1>
+      <h1 className="mb-6 text-2xl font-bold text-[#111827]">Uitnodigingen</h1>
 
       <div className="mb-8">
         <UitnodigingForm userId={user!.id} />

@@ -36,7 +36,7 @@ export default async function VerslagDetailPage({
       </Link>
 
       <article className="rounded-2xl border border-[#E2DFF0] bg-white p-8 shadow-sm">
-        <h1 className="text-2xl font-bold text-[#1A1A1A]">{post.title}</h1>
+        <h1 className="text-2xl font-bold text-[#111827]">{post.title}</h1>
         <div className="mt-2 flex items-center gap-3 text-sm text-[#6B7280]">
           <span>{author?.display_name ?? "Redactie"}</span>
           <span>·</span>

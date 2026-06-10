@@ -114,11 +114,23 @@ export async function fetchStageResults(stageNumber: number): Promise<PcsStageRe
   return results;
 }
 
+function capitalizeWord(w: string): string {
+  const lower = w.normalize("NFC").toLowerCase();
+  return lower.charAt(0).toUpperCase() + lower.slice(1);
+}
+
 function normalizeName(name: string): string {
   return name
+    .normalize("NFC")
     .replace(/\s+/g, " ")
     .trim()
     .split(" ")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+    .map((word) =>
+      // Handle hyphens (Paret-Peintre) and apostrophes (O'Connor)
+      word
+        .split(/([-'])/)
+        .map((part, i) => (part === "-" || part === "'" ? part : capitalizeWord(part)))
+        .join("")
+    )
     .join(" ");
 }

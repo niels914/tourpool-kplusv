@@ -15,7 +15,7 @@ export default async function AdminVerslagenPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-[#1A1A1A]">Verslagen beheren</h1>
+        <h1 className="text-2xl font-bold text-[#111827]">Verslagen beheren</h1>
         <p className="mt-1 text-sm text-[#6B7280]">Schrijf en bewerk wedstrijdverslagen.</p>
       </div>
 

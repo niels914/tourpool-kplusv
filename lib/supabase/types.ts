@@ -126,6 +126,7 @@ export type Database = {
           stage_number: number;
           stage_date: string;
           stage_type: "rit" | "ttt" | "itt";
+          profile: string;
           departure: string | null;
           arrival: string | null;
           distance_km: number | null;
@@ -140,6 +141,7 @@ export type Database = {
           stage_number: number;
           stage_date: string;
           stage_type?: "rit" | "ttt" | "itt";
+          profile?: string;
           departure?: string | null;
           arrival?: string | null;
           distance_km?: number | null;
@@ -154,6 +156,7 @@ export type Database = {
           stage_number?: number;
           stage_date?: string;
           stage_type?: "rit" | "ttt" | "itt";
+          profile?: string;
           departure?: string | null;
           arrival?: string | null;
           distance_km?: number | null;
@@ -296,6 +299,46 @@ export type Database = {
           }
         ];
       };
+      joker_picks: {
+        Row: {
+          id: string;
+          user_id: string;
+          stage_number: number;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          stage_number: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          stage_number?: number;
+        };
+        Relationships: [];
+      };
+      ttt_team_results: {
+        Row: {
+          id: string;
+          stage_id: string;
+          team_name: string;
+          position: number;
+        };
+        Insert: {
+          id?: string;
+          stage_id: string;
+          team_name: string;
+          position: number;
+        };
+        Update: {
+          id?: string;
+          stage_id?: string;
+          team_name?: string;
+          position?: number;
+        };
+        Relationships: [];
+      };
       invitations: {
         Row: {
           id: string;
@@ -357,6 +400,14 @@ export type Database = {
           pick_count: number;
           weighted_stage_points: number;
           weighted_bonus_points: number;
+        };
+        Relationships: [];
+      };
+      user_stage_points: {
+        Row: {
+          user_id: string;
+          stage_id: string;
+          weighted_points: number;
         };
         Relationships: [];
       };

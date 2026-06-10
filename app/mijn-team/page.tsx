@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { RegistratieForm } from "@/app/registratie/RegistratieForm";
 import { ProfileEditor } from "./ProfileEditor";
+import { JokerPicker } from "./JokerPicker";
 import { UserDisplay } from "@/components/UserDisplay";
 
 export const revalidate = 0;
@@ -55,7 +56,7 @@ export default async function MijnTeamPage() {
   // Eigen picks + scores
   const { data: rawPicks } = await supabase
     .from("rider_score_detail")
-    .select("*")
+    .select("bib_slot, rider_id, rider_name, bib_number, team_name, pick_count, weighted_stage_points, weighted_bonus_points")
     .eq("user_id", user.id)
     .order("bib_slot", { ascending: true });
 
@@ -68,6 +69,10 @@ export default async function MijnTeamPage() {
   // Riders voor het form (enkel vóór deadline nodig)
   let riders: Array<{ id: string; bib_number: number; bib_digit: number; full_name: string; team_name: string; nationality: string | null; is_dns: boolean; is_dnf: boolean }> = [];
   let currentPicks: Array<{ bib_slot: number; rider_id: string; riders: { id: string; full_name: string; team_name: string; bib_number: number; nationality: string | null } | null }> = [];
+
+  // Joker picks + etappes voor de picker
+  let jokerStages: { stage_number: number; stage_type: string; profile: string; departure: string | null; arrival: string | null; distance_km: number | null }[] = [];
+  let jokerPick: number | null = null;
 
   if (isOpen) {
     const { data: allRiders } = await supabase
@@ -83,13 +88,28 @@ export default async function MijnTeamPage() {
       .eq("user_id", user.id)
       .order("bib_slot", { ascending: true });
     currentPicks = (existingPicks ?? []) as typeof currentPicks;
+
+    // Etappes voor joker picker
+    const { data: stages } = await supabase
+      .from("stages")
+      .select("stage_number, stage_type, profile, departure, arrival, distance_km")
+      .order("stage_number", { ascending: true });
+    jokerStages = (stages ?? []) as typeof jokerStages;
+
+    // Bestaande joker pick (max 1)
+    const { data: existingJokers } = await supabase
+      .from("joker_picks")
+      .select("stage_number")
+      .eq("user_id", user.id)
+      .limit(1);
+    jokerPick = existingJokers?.[0]?.stage_number ?? null;
   }
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-10">
       <div className="mb-6 flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#1A1A1A]">Mijn ploeg</h1>
+          <h1 className="text-3xl font-bold text-[#111827]">Mijn ploeg</h1>
           {profile && (
             <div className="mt-2">
               <UserDisplay profile={profile} size="md" />
@@ -123,6 +143,15 @@ export default async function MijnTeamPage() {
             currentPicks={currentPicks}
             userId={user.id}
           />
+          {jokerStages.length > 0 && (
+            <div className="mt-6">
+              <JokerPicker
+                userId={user.id}
+                stages={jokerStages}
+                currentPick={jokerPick}
+              />
+            </div>
+          )}
         </div>
       )}
 

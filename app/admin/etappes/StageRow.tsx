@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
@@ -89,7 +89,7 @@ export function StageRow({ stage }: { stage: Stage }) {
             <button
               onClick={lockStage}
               disabled={loading}
-              className="rounded px-2.5 py-1 text-xs font-medium bg-[#1A1A1A] text-[#FFD700] hover:bg-[#333] disabled:opacity-50"
+              className="rounded px-2.5 py-1 text-xs font-medium bg-[#9462A6] text-white hover:bg-[#5760A6] disabled:opacity-50"
             >
               Vergrendel
             </button>

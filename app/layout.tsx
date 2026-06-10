@@ -24,7 +24,7 @@ export default function RootLayout({
         />
       </head>
       <body>
-        <div className="tdf-stripe" />
+        <div className="kpv-stripe" />
         <Navbar />
         <main className="min-h-screen pb-20">{children}</main>
         <BottomNavWrapper />

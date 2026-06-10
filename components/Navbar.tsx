@@ -61,7 +61,7 @@ export function Navbar() {
           />
           <div className="hidden sm:block">
             <span className="text-sm font-semibold text-white">KplusV</span>
-            <span className="ml-1 text-sm font-semibold text-[#FFD700]">Tourpool</span>
+            <span className="ml-1 text-sm font-semibold text-[#B8AED6]">Tourpool</span>
             <span className="ml-1 text-xs text-white/60">2026</span>
           </div>
         </Link>

@@ -10,7 +10,7 @@ export default async function KlassementPage() {
 
   const { data: klassement } = await supabase
     .from("klassement")
-    .select("*")
+    .select("user_id, display_name, total_points, stage_points, bonus_points, rank")
     .order("rank", { ascending: true });
 
   const { data: stages } = await supabase
@@ -104,7 +104,7 @@ export default async function KlassementPage() {
     <div className="mx-auto max-w-4xl px-4 py-10">
       <div className="mb-8 flex items-start justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-[#1A1A1A]">Klassement</h1>
+          <h1 className="text-3xl font-bold text-[#111827]">Klassement</h1>
           <p className="mt-1 text-[#6B7280]">
             {lockedCount === 0
               ? "De Tour is nog niet begonnen"
@@ -156,15 +156,16 @@ export default async function KlassementPage() {
             <tbody>
               {klassement.map((entry, i) => {
                 const delta = deltaMap[entry.user_id];
+                const isLast = i === klassement.length - 1 && klassement.length > 3;
                 return (
                   <tr
                     key={entry.user_id}
                     className={`border-b border-[#F3F4F6] transition hover:bg-[#F8F7FC] ${
-                      i === 0 ? "bg-[#FFFBEB]" : ""
+                      i === 0 ? "bg-[#EDE8F5]" : isLast ? "bg-red-50" : ""
                     }`}
                   >
                     <td className="px-4 py-3">
-                      <RankBadge rank={entry.rank} />
+                      <RankBadge rank={entry.rank} isLast={isLast} />
                     </td>
                     <td className="px-4 py-3">
                       {registrationClosed ? (
@@ -222,10 +223,11 @@ export default async function KlassementPage() {
   );
 }
 
-function RankBadge({ rank }: { rank: number }) {
-  if (rank === 1) return <span className="text-xl">👑</span>;
-  if (rank === 2) return <span className="font-bold text-[#C0C0C0]">2</span>;
-  if (rank === 3) return <span className="font-bold text-[#CD7F32]">3</span>;
+function RankBadge({ rank, isLast }: { rank: number; isLast?: boolean }) {
+  if (rank === 1) return <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#5760A6] text-xs font-bold text-white">1</span>;
+  if (rank === 2) return <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#9462A6] text-xs font-bold text-white">2</span>;
+  if (rank === 3) return <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-[#B8AED6] text-xs font-bold text-white">3</span>;
+  if (isLast) return <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-xs font-bold text-white" title="Rode lantaarn">🔴</span>;
   return <span className="text-[#6B7280]">{rank}</span>;
 }
 

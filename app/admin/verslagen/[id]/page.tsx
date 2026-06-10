@@ -30,7 +30,7 @@ export default async function AdminVerslagEditPage({
         ← Terug naar verslagen
       </Link>
       <div className="rounded-2xl border border-[#E2DFF0] bg-white p-6 shadow-sm">
-        <h1 className="mb-6 text-xl font-bold text-[#1A1A1A]">Verslag bewerken</h1>
+        <h1 className="mb-6 text-xl font-bold text-[#111827]">Verslag bewerken</h1>
         <VerslagForm post={post} />
       </div>
     </div>

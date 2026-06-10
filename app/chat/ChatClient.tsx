@@ -41,7 +41,7 @@ export function ChatClient({
           // Haal displaynaam op
           const { data: profile } = await supabase
             .from("profiles")
-            .select("display_name")
+            .select("display_name, nickname, avatar_id")
             .eq("id", newMsg.user_id)
             .single();
           setMessages((prev) => [
