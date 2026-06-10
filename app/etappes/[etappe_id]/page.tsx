@@ -69,6 +69,23 @@ export default async function EtappeDetailPage({
     dagprijsProfile = prof;
   }
 
+  // Vorige en volgende etappe
+  const { data: prevStage } = await supabase
+    .from("stages")
+    .select("id, stage_number")
+    .lt("stage_number", stage.stage_number)
+    .order("stage_number", { ascending: false })
+    .limit(1)
+    .single();
+
+  const { data: nextStage } = await supabase
+    .from("stages")
+    .select("id, stage_number")
+    .gt("stage_number", stage.stage_number)
+    .order("stage_number", { ascending: true })
+    .limit(1)
+    .single();
+
   // Groepeer op result_type
   const grouped: Record<string, typeof results> = {};
   results?.forEach((r) => {
@@ -82,53 +99,92 @@ export default async function EtappeDetailPage({
         ← Terug naar etappes
       </Link>
 
-      <div className="mb-8">
-        <div className="mb-1 flex items-center gap-3">
-          <span className="rounded-full bg-[#5760A6] px-3 py-1 text-sm font-bold text-white">
-            Etappe {stage.stage_number}
-          </span>
-          {(() => {
-            const prof = PROFILE_ICONS[stage.profile] ?? PROFILE_ICONS["vlak"];
-            return (
-              <span className="rounded-full bg-[#F3F1FA] px-2.5 py-1 text-xs font-medium text-[#5760A6]">
-                {prof.emoji} {prof.label}
-              </span>
-            );
-          })()}
-          <span className="text-sm text-[#6B7280]">
-            {new Date(stage.stage_date).toLocaleDateString("nl-NL", {
-              weekday: "long",
-              day: "numeric",
-              month: "long",
-            })}
-          </span>
-        </div>
-        <h1 className="text-2xl font-bold text-[#111827]">
-          {stage.departure && stage.arrival
-            ? `${stage.departure} → ${stage.arrival}`
-            : `Etappe ${stage.stage_number}`}
-        </h1>
-        {stage.distance_km && (
-          <p className="text-[#6B7280]">{stage.distance_km} km</p>
-        )}
-        {/* Dagprijs */}
-        {stage.status === "locked" && dagprijsData && dagprijsProfile && (
-          <Link
-            href={`/deelnemers/${dagprijsData.user_id}`}
-            className="mt-3 inline-flex items-center gap-2 rounded-lg bg-[#FEF9C3] px-4 py-2 transition hover:bg-[#FEF08A]"
+      <div className="mb-8 flex items-start justify-between gap-4">
+        {/* Linkerkolom: etappe-info */}
+        <div className="min-w-0">
+          <div className="mb-1 flex flex-wrap items-center gap-2">
+            <span className="rounded-full bg-[#5760A6] px-3 py-1 text-sm font-bold text-white">
+              Etappe {stage.stage_number}
+            </span>
+            {(() => {
+              const prof = PROFILE_ICONS[stage.profile] ?? PROFILE_ICONS["vlak"];
+              return (
+                <span className="rounded-full bg-[#F3F1FA] px-2.5 py-1 text-xs font-medium text-[#5760A6]">
+                  {prof.emoji} {prof.label}
+                </span>
+              );
+            })()}
+            <span className="text-sm text-[#6B7280]">
+              {new Date(stage.stage_date).toLocaleDateString("nl-NL", {
+                weekday: "long",
+                day: "numeric",
+                month: "long",
+              })}
+            </span>
+          </div>
+          <h1 className="text-2xl font-bold text-[#111827]">
+            {stage.departure && stage.arrival
+              ? `${stage.departure} → ${stage.arrival}`
+              : `Etappe ${stage.stage_number}`}
+          </h1>
+          {stage.distance_km && (
+            <p className="text-[#6B7280]">{stage.distance_km} km</p>
+          )}
+          <a
+            href={`https://www.touretappe.nl/tour-de-france-2026-parcours/etappe-${stage.stage_number}-route-tdf-2026/`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-2 inline-flex items-center gap-1.5 text-sm text-[#007DB5] hover:underline"
           >
-            <span className="text-lg">🏆</span>
-            <div>
-              <span className="text-xs font-semibold text-[#92400E]">Dagprijs</span>
-              <span className="ml-1.5 text-sm font-medium text-[#78350F]">
-                {dagprijsProfile.nickname ?? dagprijsProfile.display_name}
-              </span>
-              <span className="ml-2 text-xs font-bold text-[#92400E]">
-                {Number(dagprijsData.weighted_points).toFixed(2)} ptn
-              </span>
-            </div>
-          </Link>
-        )}
+            Bekijk routedetails op touretappe.nl →
+          </a>
+          {/* Dagprijs */}
+          {stage.status === "locked" && dagprijsData && dagprijsProfile && (
+            <Link
+              href={`/deelnemers/${dagprijsData.user_id}`}
+              className="mt-3 inline-flex items-center gap-2 rounded-lg bg-[#FEF9C3] px-4 py-2 transition hover:bg-[#FEF08A]"
+            >
+              <span className="text-lg">🏆</span>
+              <div>
+                <span className="text-xs font-semibold text-[#92400E]">Dagprijs</span>
+                <span className="ml-1.5 text-sm font-medium text-[#78350F]">
+                  {dagprijsProfile.nickname ?? dagprijsProfile.display_name}
+                </span>
+                <span className="ml-2 text-xs font-bold text-[#92400E]">
+                  {Number(dagprijsData.weighted_points).toFixed(2)} ptn
+                </span>
+              </div>
+            </Link>
+          )}
+        </div>
+
+        {/* Rechterkolom: navigatieknoppen */}
+        <div className="flex shrink-0 items-center gap-2">
+          {prevStage ? (
+            <Link
+              href={`/etappes/${prevStage.id}`}
+              className="inline-flex items-center gap-1 rounded-lg border border-[#E2DFF0] bg-white px-3 py-2 text-sm font-medium text-[#374151] transition hover:border-[#9462A6] hover:text-[#9462A6]"
+              title={`Etappe ${prevStage.stage_number}`}
+            >
+              ←
+              <span className="hidden sm:inline">Etappe {prevStage.stage_number}</span>
+            </Link>
+          ) : (
+            <div className="w-9 sm:w-[106px]" />
+          )}
+          {nextStage ? (
+            <Link
+              href={`/etappes/${nextStage.id}`}
+              className="inline-flex items-center gap-1 rounded-lg border border-[#E2DFF0] bg-white px-3 py-2 text-sm font-medium text-[#374151] transition hover:border-[#9462A6] hover:text-[#9462A6]"
+              title={`Etappe ${nextStage.stage_number}`}
+            >
+              <span className="hidden sm:inline">Etappe {nextStage.stage_number}</span>
+              →
+            </Link>
+          ) : (
+            <div className="w-9 sm:w-[106px]" />
+          )}
+        </div>
       </div>
 
       {stage.status !== "locked" ? (
@@ -232,6 +288,7 @@ export default async function EtappeDetailPage({
           })}
         </div>
       )}
+
     </div>
   );
 }

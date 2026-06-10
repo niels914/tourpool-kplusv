@@ -4,7 +4,7 @@ export default function SpelregelsPage() {
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <h1 className="mb-1 text-3xl font-bold text-[#111827]">Spelregels</h1>
-      <p className="mb-8 text-[#6B7280]">KplusV Tourpool 2026 — Tour de France, 27 juni t/m 20 juli 2026</p>
+      <p className="mb-8 text-[#6B7280]">KplusV Tourpool 2026 — Tour de France, 4 t/m 26 juli 2026</p>
 
       {/* Inleiding */}
       <Section title="Over de pool">
@@ -157,7 +157,7 @@ export default function SpelregelsPage() {
         <div className="rounded-xl bg-[#EDE8F5] p-5 text-sm">
           <p className="mb-2 font-semibold">Voorbeeld:</p>
           <p>
-            Je kiest etappe 13 (berg, Courchevel) als joker en scoort daar 12,50 punten.
+            Je kiest etappe 19 (berg, Alpe d'Huez) als joker en scoort daar 12,50 punten.
             Jokerbonus: 12,50 × 0,5 = <strong>+6,25 extra punten</strong> aan het einde van de Tour.
           </p>
         </div>

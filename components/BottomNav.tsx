@@ -18,7 +18,7 @@ export function BottomNav({ lastLockedStageId }: Props) {
   const isChat = pathname.startsWith("/chat");
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#E2DFF0] bg-white/95 backdrop-blur-sm">
+    <nav className="fixed bottom-0 left-0 right-0 z-50 border-t border-[#E2DFF0] bg-white/95 backdrop-blur-sm md:hidden">
       <div className="mx-auto flex max-w-lg items-end justify-around px-2 py-2">
 
         {/* Etappe */}

@@ -9,8 +9,9 @@ type Props = {
   stageDate: string;
   departure: string | null;
   arrival: string | null;
-  stageType: string;
-  typeLabel: string;
+  profileLabel: string;
+  profileEmoji: string;
+  profileColor: string;
   distanceKm: number | null;
   statusLabel: string;
   statusColor: string;
@@ -18,7 +19,7 @@ type Props = {
 
 export function EtappeRow({
   id, isClickable, stageNumber, stageDate, departure, arrival,
-  stageType, typeLabel, distanceKm, statusLabel, statusColor,
+  profileLabel, profileEmoji, profileColor, distanceKm, statusLabel, statusColor,
 }: Props) {
   const router = useRouter();
 
@@ -38,10 +39,8 @@ export function EtappeRow({
         {departure && arrival ? `${departure} → ${arrival}` : "—"}
       </td>
       <td className="hidden px-4 py-3 md:table-cell">
-        <span className={`rounded px-1.5 py-0.5 text-xs font-medium ${
-          stageType === "ttt" ? "bg-purple-100 text-purple-700" : "bg-gray-100 text-gray-600"
-        }`}>
-          {typeLabel}
+        <span className={`inline-flex items-center gap-1 rounded px-1.5 py-0.5 text-xs font-medium ${profileColor}`}>
+          {profileEmoji} {profileLabel}
         </span>
       </td>
       <td className="hidden px-4 py-3 text-right text-[#6B7280] md:table-cell">

@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { createClient } from "@/lib/supabase/client";
 
-const navLinks = [
+const staticNavLinks: { key?: string; href: string; label: string }[] = [
   { href: "/klassement", label: "Klassement" },
-  { href: "/etappes", label: "Etappes" },
+  { key: "etappe", href: "/etappes", label: "Etappe" },
   { href: "/renners", label: "Renners" },
   { href: "/verslagen", label: "Verslagen" },
   { href: "/chat", label: "Chat" },
@@ -21,20 +21,42 @@ export function Navbar() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loggedIn, setLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [latestLockedStageId, setLatestLockedStageId] = useState<string | null>(null);
 
   useEffect(() => {
     const supabase = createClient();
     supabase.auth.getSession().then(({ data: { session } }) => {
       setLoggedIn(!!session);
+      if (session?.user?.id) {
+        supabase
+          .from("profiles")
+          .select("is_admin")
+          .eq("id", session.user.id)
+          .single()
+          .then(({ data }) => {
+            if (data?.is_admin) setIsAdmin(true);
+          });
+      }
     });
+    // Haal de meest recent afgeronde etappe op
     supabase
-      .from("profiles")
-      .select("is_admin")
+      .from("stages")
+      .select("id")
+      .eq("status", "locked")
+      .order("stage_number", { ascending: false })
+      .limit(1)
       .single()
       .then(({ data }) => {
-        if (data?.is_admin) setIsAdmin(true);
+        if (data) setLatestLockedStageId(data.id);
       });
   }, []);
+
+  const navLinks = staticNavLinks.map((link) => {
+    if (link.key === "etappe" && latestLockedStageId) {
+      return { ...link, href: `/etappes/${latestLockedStageId}` };
+    }
+    return link;
+  });
 
   async function handleSignOut() {
     const supabase = createClient();
@@ -68,20 +90,25 @@ export function Navbar() {
 
         {/* Desktop nav */}
         {loggedIn && (
-          <div className="hidden items-center gap-1 md:flex">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
-                  pathname.startsWith(link.href)
-                    ? "bg-white text-[#5760A6]"
-                    : "text-white/80 hover:bg-white/10 hover:text-white"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
+          <div className="hidden items-center gap-1 md:flex overflow-x-auto">
+            {navLinks.map((link) => {
+              const isActive = link.key === "etappe"
+                ? pathname.startsWith("/etappes")
+                : pathname.startsWith(link.href);
+              return (
+                <Link
+                  key={link.key ?? link.href}
+                  href={link.href}
+                  className={`rounded-lg px-3 py-1.5 text-sm font-medium transition ${
+                    isActive
+                      ? "bg-white text-[#5760A6]"
+                      : "text-white/80 hover:bg-white/10 hover:text-white"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              );
+            })}
             {isAdmin && (
               <Link
                 href="/admin"
@@ -129,20 +156,25 @@ export function Navbar() {
       {/* Mobiel menu */}
       {menuOpen && loggedIn && (
         <div className="border-t border-white/20 px-4 py-2 md:hidden">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              onClick={() => setMenuOpen(false)}
-              className={`block rounded-lg px-3 py-2 text-sm font-medium ${
-                pathname.startsWith(link.href)
-                  ? "bg-white text-[#5760A6]"
-                  : "text-white/80 hover:text-white"
-              }`}
-            >
-              {link.label}
-            </Link>
-          ))}
+          {navLinks.map((link) => {
+            const isActive = link.key === "etappe"
+              ? pathname.startsWith("/etappes")
+              : pathname.startsWith(link.href);
+            return (
+              <Link
+                key={link.key ?? link.href}
+                href={link.href}
+                onClick={() => setMenuOpen(false)}
+                className={`block rounded-lg px-3 py-2 text-sm font-medium ${
+                  isActive
+                    ? "bg-white text-[#5760A6]"
+                    : "text-white/80 hover:text-white"
+                }`}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           <Link
             href="/registratie"
             onClick={() => setMenuOpen(false)}
