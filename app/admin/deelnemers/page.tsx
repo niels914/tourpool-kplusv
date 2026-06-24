@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { BlockButton } from "./BlockButton";
+import { DeleteButton } from "./DeleteButton";
 
 export default async function AdminDeelnemersPage() {
   const supabase = await createClient();
@@ -58,7 +59,10 @@ export default async function AdminDeelnemersPage() {
                     </span>
                   </td>
                   <td className="px-4 py-3">
-                    <BlockButton profileId={profile.id} isBlocked={profile.is_blocked} />
+                    <div className="flex items-center gap-1">
+                      <BlockButton profileId={profile.id} isBlocked={profile.is_blocked} />
+                      <DeleteButton profileId={profile.id} displayName={profile.display_name} />
+                    </div>
                   </td>
                 </tr>
               );

@@ -69,8 +69,9 @@ export async function fetchStartlist(): Promise<PcsRider[]> {
   return riders;
 }
 
-export async function fetchStageResults(stageNumber: number): Promise<PcsStageResult[]> {
-  const url = `${PCS_BASE}/${TOUR_PATH}/stage-${stageNumber}`;
+export async function fetchStageResults(stageNumber: number, year?: number): Promise<PcsStageResult[]> {
+  const path = year ? `race/tour-de-france/${year}` : TOUR_PATH;
+  const url = `${PCS_BASE}/${path}/stage-${stageNumber}`;
   const html = await fetchPage(url);
   const root = parse(html);
 

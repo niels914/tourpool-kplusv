@@ -12,7 +12,7 @@ export default async function AdminUitnodigingenPage() {
     .select("*, used_by_profile:profiles!invitations_used_by_fkey(display_name)")
     .order("created_at", { ascending: false });
 
-  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tourpool.netlify.app";
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://tourpool-kplusv.netlify.app";
 
   return (
     <div>

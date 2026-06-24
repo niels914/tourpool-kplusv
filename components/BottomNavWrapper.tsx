@@ -15,5 +15,11 @@ export async function BottomNavWrapper() {
     .limit(1)
     .single();
 
-  return <BottomNav lastLockedStageId={lastStage?.id ?? null} />;
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("is_admin")
+    .eq("id", user.id)
+    .single();
+
+  return <BottomNav lastLockedStageId={lastStage?.id ?? null} isAdmin={!!profile?.is_admin} />;
 }

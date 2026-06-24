@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 type Stage = {
   id: string;
@@ -30,6 +31,20 @@ export function StageRow({ stage }: { stage: Stage }) {
     const res = await fetch(`/api/admin/sync-stage?stage_id=${stage.id}`, { method: "POST" });
     const data = await res.json();
     if (data.error) alert("Fout: " + data.error);
+    router.refresh();
+    setLoading(false);
+  }
+
+  async function mockResults() {
+    setLoading(true);
+    const res = await fetch("/api/admin/mock-stage-results", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ stageId: stage.id }),
+    });
+    const data = await res.json();
+    if (data.error) alert("Fout: " + data.error);
+    else alert(`Mock: ${data.inserted} resultaten gegenereerd`);
     router.refresh();
     setLoading(false);
   }
@@ -65,25 +80,42 @@ export function StageRow({ stage }: { stage: Stage }) {
         </span>
       </td>
       <td className="px-4 py-2.5 text-center">
-        <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${
-          stage.status === "locked" ? "bg-[#EDE8F5] text-[#5760A6]" :
-          stage.status === "results_pending" ? "bg-[#EDE8F5] text-[#5760A6]" :
-          stage.status === "live" ? "bg-red-100 text-red-700" :
-          "bg-gray-100 text-gray-600"
-        }`}>
-          {STATUS_LABELS[stage.status]}
-        </span>
+        {stage.status === "results_pending" ? (
+          <Link
+            href={`/admin/etappes/${stage.id}`}
+            className="rounded-full bg-amber-100 px-2.5 py-1 text-xs font-medium text-amber-700 hover:bg-amber-200"
+          >
+            {STATUS_LABELS[stage.status]} →
+          </Link>
+        ) : (
+          <span className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+            stage.status === "locked" ? "bg-[#EDE8F5] text-[#5760A6]" :
+            stage.status === "live" ? "bg-red-100 text-red-700" :
+            "bg-gray-100 text-gray-600"
+          }`}>
+            {STATUS_LABELS[stage.status]}
+          </span>
+        )}
       </td>
       <td className="px-4 py-2.5">
         <div className="flex gap-1">
           {stage.status !== "locked" && stage.stage_type !== "ttt" && (
-            <button
-              onClick={syncResults}
-              disabled={loading}
-              className="rounded px-2.5 py-1 text-xs font-medium bg-[#EDE8F5] text-[#5760A6] hover:bg-[#D1FAE5] disabled:opacity-50"
-            >
-              {loading ? "…" : "Sync"}
-            </button>
+            <>
+              <button
+                onClick={syncResults}
+                disabled={loading}
+                className="rounded px-2.5 py-1 text-xs font-medium bg-[#EDE8F5] text-[#5760A6] hover:bg-[#D1FAE5] disabled:opacity-50"
+              >
+                {loading ? "…" : "Sync"}
+              </button>
+              <button
+                onClick={mockResults}
+                disabled={loading}
+                className="rounded px-2.5 py-1 text-xs font-medium bg-amber-100 text-amber-700 hover:bg-amber-200 disabled:opacity-50"
+              >
+                {loading ? "…" : "Mock"}
+              </button>
+            </>
           )}
           {stage.status === "results_pending" && (
             <button

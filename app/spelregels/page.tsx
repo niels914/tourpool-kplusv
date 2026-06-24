@@ -1,6 +1,28 @@
 import { STAGE_FINISH_POINTS, JERSEY_POINTS, FINAL_BONUS_POINTS, TTT_TEAM_POINTS } from "@/lib/scoring";
+import { createClient } from "@/lib/supabase/server";
 
-export default function SpelregelsPage() {
+export default async function SpelregelsPage() {
+  const supabase = await createClient();
+  const { data: config } = await supabase
+    .from("config")
+    .select("value")
+    .eq("key", "registration_deadline")
+    .single();
+
+  let deadlineText = "zaterdag 4 juli 2026 om 16:00 Nederlandse tijd";
+  if (config?.value) {
+    const d = new Date(config.value);
+    const formatter = new Intl.DateTimeFormat("nl-NL", {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      timeZone: "Europe/Amsterdam",
+    });
+    deadlineText = formatter.format(d) + " Nederlandse tijd";
+  }
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
       <h1 className="mb-1 text-3xl font-bold text-[#111827]">Spelregels</h1>
@@ -35,7 +57,7 @@ export default function SpelregelsPage() {
         </p>
         <p>
           Je keuze is definitief na de deadline:{" "}
-          <strong>zaterdag 4 juli 2026 om 12:01 Nederlandse tijd</strong>. Daarna zijn je keuzes
+          <strong>{deadlineText}</strong>. Daarna zijn je keuzes
           vergrendeld.
         </p>
       </Section>

@@ -19,14 +19,17 @@ const staticNavLinks: { key?: string; href: string; label: string }[] = [
 export function Navbar() {
   const pathname = usePathname();
   const [isAdmin, setIsAdmin] = useState(false);
-  const [loggedIn, setLoggedIn] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [latestLockedStageId, setLatestLockedStageId] = useState<string | null>(null);
 
+  const isAuthPage = pathname === "/login" || pathname.startsWith("/join");
+
   useEffect(() => {
+    if (isAuthPage) return;
+
     const supabase = createClient();
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setLoggedIn(!!session);
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       if (session?.user?.id) {
         supabase
           .from("profiles")
@@ -34,11 +37,13 @@ export function Navbar() {
           .eq("id", session.user.id)
           .single()
           .then(({ data }) => {
-            if (data?.is_admin) setIsAdmin(true);
+            setIsAdmin(!!data?.is_admin);
           });
+      } else {
+        setIsAdmin(false);
       }
     });
-    // Haal de meest recent afgeronde etappe op
+
     supabase
       .from("stages")
       .select("id")
@@ -49,7 +54,9 @@ export function Navbar() {
       .then(({ data }) => {
         if (data) setLatestLockedStageId(data.id);
       });
-  }, []);
+
+    return () => subscription.unsubscribe();
+  }, [isAuthPage]);
 
   const navLinks = staticNavLinks.map((link) => {
     if (link.key === "etappe" && latestLockedStageId) {
@@ -89,7 +96,7 @@ export function Navbar() {
         </Link>
 
         {/* Desktop nav */}
-        {loggedIn && (
+        {!isAuthPage && (
           <div className="hidden items-center gap-1 md:flex overflow-x-auto">
             {navLinks.map((link) => {
               const isActive = link.key === "etappe"
@@ -126,7 +133,7 @@ export function Navbar() {
 
         {/* Rechts: ploeg samenstellen + uitloggen */}
         <div className="flex items-center gap-2">
-          {loggedIn && (
+          {!isAuthPage && (
             <button
               onClick={handleSignOut}
               className="rounded-lg px-3 py-1.5 text-sm text-white/60 hover:text-white"
@@ -136,7 +143,7 @@ export function Navbar() {
           )}
 
           {/* Hamburger */}
-          {loggedIn && (
+          {!isAuthPage && (
             <button
               onClick={() => setMenuOpen(!menuOpen)}
               className="rounded-lg p-2 text-white/80 hover:bg-white/10 md:hidden"
@@ -154,7 +161,7 @@ export function Navbar() {
       </div>
 
       {/* Mobiel menu */}
-      {menuOpen && loggedIn && (
+      {menuOpen && !isAuthPage && (
         <div className="border-t border-white/20 px-4 py-2 md:hidden">
           {navLinks.map((link) => {
             const isActive = link.key === "etappe"
