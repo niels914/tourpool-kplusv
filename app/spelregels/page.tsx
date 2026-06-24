@@ -1,6 +1,8 @@
 import { STAGE_FINISH_POINTS, JERSEY_POINTS, FINAL_BONUS_POINTS, TTT_TEAM_POINTS } from "@/lib/scoring";
 import { createClient } from "@/lib/supabase/server";
 
+export const revalidate = 0;
+
 export default async function SpelregelsPage() {
   const supabase = await createClient();
   const { data: config } = await supabase
