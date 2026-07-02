@@ -315,12 +315,12 @@ export default async function HomePage() {
                 return (
                   <div key={msg.id} className="flex items-start gap-2">
                     <div className="flex-1 min-w-0">
-                      <p className="text-xs font-semibold text-[#5760A6]">
+                      <p className="truncate text-xs font-semibold text-[#5760A6]">
                         {p?.nickname
                           ? `${p.nickname} - ${initials}`
                           : (p?.display_name ?? "…")}
                       </p>
-                      <p className="text-sm text-[#374151] truncate">{msg.content}</p>
+                      <p className="truncate text-sm text-[#374151]">{msg.content}</p>
                     </div>
                     <span className="shrink-0 text-xs text-[#9CA3AF]">
                       {new Date(msg.created_at).toLocaleTimeString("nl-NL", { hour: "2-digit", minute: "2-digit" })}

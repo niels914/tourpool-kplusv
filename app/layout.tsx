@@ -26,7 +26,7 @@ export default function RootLayout({
       <body>
         <div className="kpv-stripe" />
         <Navbar />
-        <main className="min-h-screen pb-20 md:pb-0">{children}</main>
+        <main className="min-h-screen overflow-x-hidden pb-20 md:pb-0">{children}</main>
         <BottomNavWrapper />
       </body>
     </html>
