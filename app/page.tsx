@@ -159,7 +159,7 @@ export default async function HomePage() {
         {profile && <div className="mt-1"><UserDisplay profile={profile} size="md" /></div>}
       </div>
 
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         {/* Mini klassement */}
         <Link href="/klassement" className="group rounded-2xl border border-[#E2DFF0] bg-white p-5 shadow-sm hover:border-[#9462A6] transition">
           <h2 className="mb-3 text-xs font-semibold uppercase tracking-wide text-[#6B7280]">Klassement</h2>
@@ -279,7 +279,7 @@ export default async function HomePage() {
         </Link>
       </div>
 
-      <div className="mt-4 grid gap-4 md:grid-cols-3">
+      <div className="mt-4 grid grid-cols-1 gap-4 md:grid-cols-3">
         {/* Laatste verslag */}
         <Link
           href={latestPost ? `/verslagen/${latestPost.id}` : "/verslagen"}
