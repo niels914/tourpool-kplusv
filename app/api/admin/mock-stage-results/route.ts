@@ -49,7 +49,8 @@ export async function POST(request: NextRequest) {
 
   const shuffled = shuffle(riders);
 
-  const classifications: { type: string; count: number }[] = [
+  type ResultType = "stage_finish" | "gc_standing" | "mountain_standing" | "sprint_standing" | "white_standing";
+  const classifications: { type: ResultType; count: number }[] = [
     { type: "stage_finish", count: 10 },
     { type: "gc_standing", count: 3 },
     { type: "mountain_standing", count: 3 },
@@ -57,7 +58,7 @@ export async function POST(request: NextRequest) {
     { type: "white_standing", count: 3 },
   ];
 
-  const results: { stage_id: string; rider_id: string; result_type: string; position: number }[] = [];
+  const results: { stage_id: string; rider_id: string; result_type: ResultType; position: number }[] = [];
   let offset = 0;
 
   for (const { type, count } of classifications) {
