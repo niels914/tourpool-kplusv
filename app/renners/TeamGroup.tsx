@@ -91,7 +91,7 @@ export function TeamGroup({
                 style={{ gridTemplateColumns: "32px 32px 1fr auto auto" }}
               >
                 {/* Foto */}
-                <RiderPhoto pcsSlug={rider.pcs_slug ?? null} name={rider.full_name} />
+                <RiderPhoto name={rider.full_name} />
 
                 {/* Rugnummer */}
                 <span className="flex h-6 w-8 items-center justify-center rounded-full bg-[#5760A6] text-xs font-bold text-white">

@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
+import { RiderAvatar } from "@/app/renners/RiderImage";
 
 type Rider = {
   id: string;
@@ -147,7 +148,9 @@ export function RegistratieForm({
               </div>
 
               {selectedRider ? (
-                <div>
+                <div className="flex items-start gap-2">
+                  <RiderAvatar name={selectedRider.full_name} size="sm" />
+                  <div>
                   <p className="font-semibold text-[#111827] text-sm leading-tight">
                     {selectedRider.full_name}
                   </p>
@@ -160,6 +163,7 @@ export function RegistratieForm({
                   >
                     Wijzigen
                   </button>
+                  </div>
                 </div>
               ) : (
                 <button
@@ -205,11 +209,14 @@ export function RegistratieForm({
                       alreadyPicked ? "opacity-40 cursor-not-allowed" : ""
                     } ${selections[activeSlot] === rider.id ? "bg-[#EDE8F5]" : ""}`}
                   >
-                    <div>
-                      <span className="font-medium text-[#111827]">{rider.full_name}</span>
-                      <span className="ml-2 text-xs text-[#6B7280]">
-                        #{rider.bib_number} · {rider.team_name}
-                      </span>
+                    <div className="flex items-center gap-2">
+                      <RiderAvatar name={rider.full_name} size="sm" />
+                      <div>
+                        <span className="font-medium text-[#111827]">{rider.full_name}</span>
+                        <span className="ml-2 text-xs text-[#6B7280]">
+                          #{rider.bib_number} · {rider.team_name}
+                        </span>
+                      </div>
                     </div>
                     {rider.nationality && (
                       <span className="text-xs text-[#6B7280]">{rider.nationality}</span>
