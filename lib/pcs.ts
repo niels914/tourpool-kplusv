@@ -19,11 +19,32 @@ export type PcsStageResult = {
 };
 
 async function fetchPage(url: string): Promise<string> {
-  const res = await fetch(url, {
-    headers: {
-      "User-Agent": "Mozilla/5.0 (compatible; TourpoolBot/1.0)",
-      Accept: "text/html",
-    },
+  // PCS zit achter Cloudflare, dat een directe fetch vanaf een server (Node/undici,
+  // dus ook Netlify) blokkeert met een 403 bot-challenge. Zet daarom een scraping-proxy
+  // in via de env-var PCS_PROXY_TEMPLATE — een URL-template met {url} als placeholder,
+  // bijvoorbeeld:
+  //   ScraperAPI:  http://api.scraperapi.com/?api_key=XXX&ultra_premium=true&url={url}
+  //   ScrapingBee: https://app.scrapingbee.com/api/v1/?api_key=XXX&stealth_proxy=true&url={url}
+  //   ZenRows:     https://api.zenrows.com/v1/?apikey=XXX&premium_proxy=true&url={url}
+  // Zonder de env-var valt hij terug op een directe fetch (werkt alleen lokaal/curl-achtig).
+  const proxyTemplate = process.env.PCS_PROXY_TEMPLATE;
+  const requestUrl = proxyTemplate
+    ? proxyTemplate.replace("{url}", encodeURIComponent(url))
+    : url;
+
+  const res = await fetch(requestUrl, {
+    // Bij proxy regelt de dienst zelf de browser-fingerprint; bij directe fetch
+    // sturen we browserachtige headers mee (helpt niet tegen Cloudflare, wel netter).
+    headers: proxyTemplate
+      ? {}
+      : {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",
+          Accept:
+            "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+          "Accept-Language": "nl-NL,nl;q=0.9,en;q=0.8",
+          Referer: `${PCS_BASE}/`,
+        },
     next: { revalidate: 0 },
   });
   if (!res.ok) throw new Error(`PCS fetch fout: ${res.status} voor ${url}`);
@@ -77,31 +98,48 @@ export async function fetchStageResults(stageNumber: number, year?: number): Pro
 
   const results: PcsStageResult[] = [];
 
-  // Elke classificatietabel heeft een specifieke klasse
-  const tables = [
-    { selector: "div#resultado-eti table.basic", type: "stage_finish" as const, maxPos: 10 },
-    { selector: "div#gc table.basic", type: "gc_standing" as const, maxPos: 3 },
-    { selector: "div#kom table.basic", type: "mountain_standing" as const, maxPos: 3 },
-    { selector: "div#sprint table.basic", type: "sprint_standing" as const, maxPos: 3 },
-    { selector: "div#youth table.basic", type: "white_standing" as const, maxPos: 3 },
+  // PCS-resultaten staan in #resultsCont met per klassement een .resTab[data-id].
+  // De navigatie-links (a[data-id]) koppelen een label (STAGE/GC/...) aan het data-id.
+  const cont = root.querySelector("div#resultsCont");
+  if (!cont) return results;
+
+  const idByLabel: Record<string, string> = {};
+  for (const a of root.querySelectorAll("a[data-id]")) {
+    const id = a.getAttribute("data-id");
+    if (id) idByLabel[a.text.trim().toUpperCase()] = id;
+  }
+
+  const classifications: { label: string; type: PcsStageResult["result_type"]; maxPos: number }[] = [
+    { label: "STAGE", type: "stage_finish", maxPos: 10 },
+    { label: "GC", type: "gc_standing", maxPos: 3 },
+    { label: "POINTS", type: "sprint_standing", maxPos: 3 },
+    { label: "KOM", type: "mountain_standing", maxPos: 3 },
+    { label: "YOUTH", type: "white_standing", maxPos: 3 },
   ];
 
-  for (const { selector, type, maxPos } of tables) {
-    const table = root.querySelector(selector);
+  for (const { label, type, maxPos } of classifications) {
+    const id = idByLabel[label];
+    if (!id) continue;
+
+    const tab = cont.querySelector(`.resTab[data-id="${id}"]`);
+    if (!tab) continue;
+
+    // Alleen de eerste resultatentabel; latere tabellen zijn subtotalen
+    // (tussensprints, bergpunten per col) die de posities opnieuw nummeren.
+    const table = tab.querySelector("table");
     if (!table) continue;
 
-    const rows = table.querySelectorAll("tbody tr");
-    for (const row of rows) {
-      const cells = row.querySelectorAll("td");
-      if (cells.length < 3) continue;
+    const body = table.querySelector("tbody") ?? table;
+    for (const row of body.querySelectorAll("tr")) {
+      const firstCell = row.querySelector("td");
+      if (!firstCell) continue;
 
-      const posText = cells[0].text.trim().replace(".", "");
-      const pos = parseInt(posText, 10);
-      if (isNaN(pos) || pos > maxPos) continue;
+      const pos = parseInt(firstCell.text.trim().replace(".", ""), 10);
+      if (isNaN(pos) || pos < 1 || pos > maxPos) continue;
 
-      const bib = parseInt(cells[1]?.text.trim() ?? "", 10);
-      const nameEl = row.querySelector("a[href*='/rider/']");
-      const name = normalizeName(nameEl?.text.trim() ?? cells[2]?.text.trim() ?? "");
+      const bib = parseInt(row.querySelector("td.bibs")?.text.trim() ?? "", 10);
+      const nameEl = row.querySelector("a[href*='rider/']");
+      const name = normalizeName(nameEl?.text.trim() ?? "");
 
       results.push({
         rider_name: name,
