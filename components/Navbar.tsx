@@ -14,6 +14,7 @@ const staticNavLinks: { key?: string; href: string; label: string }[] = [
   { href: "/chat", label: "Chat" },
   { href: "/mijn-team", label: "Mijn ploeg" },
   { href: "/spelregels", label: "Spelregels" },
+  { href: "/soundboard", label: "Soundboard" },
 ];
 
 export function Navbar() {
