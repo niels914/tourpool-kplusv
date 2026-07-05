@@ -6,6 +6,9 @@ import {
   playRodania,
   playFietstoeter,
   playWaterVergiften,
+  playPrikkeldraad,
+  playNosTune,
+  playKarakter,
 } from "@/lib/soundboard";
 
 const SOUNDS: { icon: string; label: string; play: () => void }[] = [
@@ -14,6 +17,9 @@ const SOUNDS: { icon: string; label: string; play: () => void }[] = [
   { icon: "🔴", label: "Rodania (rode lantaarn)", play: playRodania },
   { icon: "🚲", label: "Fietstoeter / luchthoorn", play: playFietstoeter },
   { icon: "🥤", label: "Water?!", play: playWaterVergiften },
+  { icon: "🌵", label: "In het prikkeldraad", play: playPrikkeldraad },
+  { icon: "📻", label: "NOS-tune", play: playNosTune },
+  { icon: "🤬", label: "Karakter", play: playKarakter },
 ];
 
 export function SoundboardClient() {
