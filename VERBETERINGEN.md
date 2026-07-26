@@ -33,6 +33,55 @@ volgende editie van de pool.
   - of een bonus/malus die het aantrekkelijker maakt om een minder voor de
     hand liggende etappe te kiezen.
 
+## Jokeropbrengst Tour 2026 (referentiecijfers)
+
+Berekend op de gewogen etappepunten (`user_stage_points`, wortelregel al
+toegepast) voor de etappe die elke deelnemer als joker koos. De jokerbonus is
+het extra deel (×0,5); "met joker" is ×1,5. Deze bonus is **niet** verwerkt in
+het klassement — zie het punt hierboven.
+
+| Deelnemer | Etappe | Zonder joker | Jokerbonus | Met joker |
+| --- | --- | --- | --- | --- |
+| Eline | 19 | 15,00 | +7,50 | 22,50 |
+| Niels Arends | 7 | 13,64 | +6,82 | 20,47 |
+| Bo | 3 | 12,22 | +6,11 | 18,33 |
+| Sylvia Hendriks | 19 | 11,37 | +5,68 | 17,05 |
+| Maarten | 19 | 9,55 | +4,78 | 14,33 |
+| Marco | 20 | 9,26 | +4,63 | 13,89 |
+| Hendrik | 20 | 9,26 | +4,63 | 13,89 |
+| Parijs is nog ver | 20 | 8,50 | +4,25 | 12,75 |
+| Maaike S | 19 | 8,39 | +4,19 | 12,59 |
+| Chasse Perey | 16 | 8,33 | +4,17 | 12,50 |
+| Frank | 19 | 7,33 | +3,67 | 11,00 |
+| Boris Polm | 5 | 6,40 | +3,20 | 9,60 |
+| Peter KLM | 20 | 6,13 | +3,06 | 9,19 |
+| n.ahsmann | 19 | 4,22 | +2,11 | 6,33 |
+| Merijn | 19 | 2,97 | +1,49 | 4,46 |
+| Martin | 19 | 2,22 | +1,11 | 3,33 |
+| Marije | 9 | 1,61 | +0,81 | 2,41 |
+
+Gemiddelde opbrengst per gekozen etappe:
+
+- etappe 19 (8 deelnemers): 7,63 — spreiding 2,22 tot 15,00
+- etappe 20 (4 deelnemers): 8,29
+- etappes 3/5/7/9/16 (elk 1 deelnemer): 8,44
+
+De populaire Alpe d'Huez-etappes leverden dus gemiddeld niet meer op dan de
+minder voor de hand liggende keuzes; binnen etappe 19 zat bovendien een factor
+7 verschil tussen de hoogste en laagste score, puur afhankelijk van de
+ploegsamenstelling. Nuttig argument bij de afweging over de jokerregel
+hierboven.
+
+## Bugs / techniek
+
+- **`round()` werkt niet direct op de puntenviews.** `weighted_points` in
+  `user_stage_points` is `double precision` (gevolg van `sqrt()` in de
+  wortelweging), en Postgres kent `round(x, 2)` alleen voor `numeric`. Een
+  query als `round(usp.weighted_points, 2)` faalt met
+  `ERROR 42883: function round(double precision, integer) does not exist`.
+  Werk met een expliciete cast (`::numeric`), of overweeg de views zelf
+  `numeric` te laten teruggeven zodat afronden overal gewoon werkt.
+
 ## Data-toegang
 
 - Er was geen live Supabase-toegang beschikbaar in de Claude Code-sessie
