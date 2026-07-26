@@ -72,6 +72,47 @@ minder voor de hand liggende keuzes; binnen etappe 19 zat bovendien een factor
 ploegsamenstelling. Nuttig argument bij de afweging over de jokerregel
 hierboven.
 
+## Effect van de jokerregel op de eindstand 2026
+
+Eindstand zoals die nu in het klassement staat, naast de stand zoals die
+geweest zou zijn met de jokerbonus (×0,5 op de gekozen etappe) meegeteld.
+
+| # nu | Deelnemer | Totaal nu | Jokerbonus | Met joker | # met joker |
+| --- | --- | --- | --- | --- | --- |
+| 1 | Hendrik | 230,26 | +4,63 | 234,88 | 2 |
+| 2 | Sylvia Hendriks | 230,26 | +5,68 | 235,94 | 1 |
+| 3 | Bo | 226,86 | +6,11 | 232,97 | 3 |
+| 4 | Niels Arends | 219,42 | +6,82 | 226,25 | 4 |
+| 5 | Parijs is nog ver | 218,19 | +4,25 | 222,44 | 5 |
+| 6 | Marco | 215,67 | +4,63 | 220,30 | 6 |
+| 7 | Eline | 204,42 | +7,50 | 211,92 | 7 |
+| 8 | Maarten | 183,74 | +4,78 | 188,51 | 8 |
+| 9 | Chasse Perey | 163,53 | +4,17 | 167,69 | 9 |
+| 10 | Maaike S | 162,67 | +4,20 | 166,87 | 10 |
+| 11 | Peter KLM | 162,29 | +3,06 | 165,35 | 11 |
+| 12 | Merijn | 159,26 | +1,49 | 160,74 | 12 |
+| 13 | Martin | 155,22 | +1,11 | 156,33 | 13 |
+| 14 | n.ahsmann | 152,85 | +2,11 | 154,96 | 14 |
+| 15 | Boris Polm | 150,57 | +3,20 | 153,77 | 15 |
+| 16 | Marije | 132,15 | +0,80 | 132,96 | 17 |
+| 17 | Frank | 131,19 | +3,67 | 134,86 | 16 |
+
+Twee plaatsen wisselen: 1 ↔ 2 en 16 ↔ 17. De rest van de rangorde blijft
+identiek, omdat de jokerbonussen (+0,80 tot +7,50) te dicht bij elkaar liggen
+om de gaten in het klassement te overbruggen.
+
+- **De eerste plaats is nu een gelijkspel dat alfabetisch wordt beslist.**
+  Hendrik en Sylvia Hendriks staan exact gelijk op 230,26. De `klassement`-view
+  breekt die gelijkstand met
+  `rank() over (order by total_points desc, display_name asc)` — dus op
+  weergavenaam, niet op prestatie. Volgend jaar een echte tiebreaker
+  toevoegen (bijvoorbeeld hoogste dagscore, aantal etappes met punten, of juist
+  de jokerscore).
+- **De jokerregel doet er alleen bovenin toe.** Met de bonus meegeteld wint
+  Sylvia met 1,06 punt verschil. Dat is precies het scenario waarvoor de
+  jokerregel bedoeld is — reden om hem volgend jaar of echt te implementeren,
+  of bewust te schrappen.
+
 ## Bugs / techniek
 
 - **`round()` werkt niet direct op de puntenviews.** `weighted_points` in
